@@ -49,6 +49,7 @@ object Form1: TForm1
   object Edit1: TEdit
     Touch.InteractiveGestures = [LongTap, DoubleTap]
     TabOrder = 0
+    CanFocus = False
     Text = '1'
     Position.X = 168.000000000000000000
     Position.Y = 32.000000000000000000
@@ -159,9 +160,9 @@ object Form1: TForm1
   object Rectangle3: TRectangle
     Cursor = crHandPoint
     Position.X = 416.000000000000000000
-    Position.Y = 224.000000000000000000
+    Position.Y = 232.000000000000000000
     Size.Width = 193.000000000000000000
-    Size.Height = 120.000000000000000000
+    Size.Height = 112.000000000000000000
     Size.PlatformDefault = False
     Stroke.Thickness = 0.000000000000000000
     OnClick = Rectangle3Click
@@ -224,5 +225,27 @@ object Form1: TForm1
     TabOrder = 5
     Text = 'Button1'
     OnClick = Button1Click
+  end
+  object Layout2: TLayout
+    Position.X = 528.000000000000000000
+    Position.Y = 40.000000000000000000
+    Size.Width = 97.000000000000000000
+    Size.Height = 33.000000000000000000
+    Size.PlatformDefault = False
+    inline Frame21: TFrame2
+      Position.X = -3.000000000000000000
+      Size.Width = 69.000000000000000000
+      Size.Height = 30.000000000000000000
+      Size.PlatformDefault = False
+      inherited Rectangle1: TRectangle
+        inherited Layout1: TLayout
+          inherited Circle1: TCircle
+            inherited ShadowEffect1: TShadowEffect
+              Direction = 45.000000000000000000
+            end
+          end
+        end
+      end
+    end
   end
 end

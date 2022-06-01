@@ -11,7 +11,7 @@ uses
   FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef, FireDAC.Stan.ExprFuncs,
   FireDAC.Phys.SQLiteWrapper.Stat, FireDAC.FMXUI.Wait, Data.DB,
   FireDAC.Comp.Client, FMX.Edit, Fmx.DialogService, FMX.Effects,
-  FMX.Filter.Effects, FMX.Layouts, FMX.Ani;
+  FMX.Filter.Effects, FMX.Layouts, FMX.Ani, Unit2;
 
 type
   TForm1 = class(TForm)
@@ -36,6 +36,8 @@ type
     FloatAnimation1: TFloatAnimation;
     ShadowEffect3: TShadowEffect;
     Button1: TButton;
+    Layout2: TLayout;
+    Frame21: TFrame2;
 
     function PosElemClique(lab: TLabel): Single;
 
