@@ -1,5 +1,6 @@
 # Les dossier à ne pas prendre en compte
 __history/
+__recovery/
 Win32/
 Android/
 
@@ -21,3 +22,6 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
+
+Project1.identcache
+*.local*
