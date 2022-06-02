@@ -42,7 +42,6 @@ begin
     Rectangle1.Fill.Color := $FF4E4E4E;
     Circle1.Fill.Color := $FFFFFFFF;
     ShadowEffect1.ShadowColor := $FFFFFFFF;
-    ShowMessage('false');
     clicked := True;
   end;
 end;

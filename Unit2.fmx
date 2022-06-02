@@ -30,6 +30,7 @@ object Frame2: TFrame2
         OnClick = Circle1Click
         object ShadowEffect1: TShadowEffect
           Distance = 2.000000000000000000
+          Direction = 45.000000000000000000
           Softness = 0.300000011920929000
           Opacity = 0.600000023841857900
           ShadowColor = claBlack

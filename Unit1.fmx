@@ -238,11 +238,10 @@ object Form1: TForm1
       Size.Height = 30.000000000000000000
       Size.PlatformDefault = False
       inherited Rectangle1: TRectangle
+        OnClick = Frame21Rectangle1Click
         inherited Layout1: TLayout
           inherited Circle1: TCircle
-            inherited ShadowEffect1: TShadowEffect
-              Direction = 45.000000000000000000
-            end
+            OnClick = Frame21Circle1Click
           end
         end
       end

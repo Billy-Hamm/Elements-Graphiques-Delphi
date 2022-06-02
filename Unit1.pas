@@ -54,6 +54,8 @@ type
     procedure Label3Click(Sender: TObject);
     procedure Rectangle3Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    procedure Frame21Circle1Click(Sender: TObject);
+    procedure Frame21Rectangle1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -89,6 +91,16 @@ procedure TForm1.FormKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char;
 begin
   if key = 13 then
   verificationIDs(sender);
+end;
+
+procedure TForm1.Frame21Circle1Click(Sender: TObject);
+begin
+  Frame21.Circle1Click(Sender);
+end;
+
+procedure TForm1.Frame21Rectangle1Click(Sender: TObject);
+begin
+  Frame21.Rectangle1Click(Sender);
 end;
 
 function TForm1.PosElemClique(lab: TLabel): Single;
@@ -200,7 +212,7 @@ begin
   FloatAnimationHeight.Enabled := False;
   if FloatAnimationWidth.Enabled = False then
   begin
-    //FMX.DialogService.TDialogService.ShowMessage('jus');
+    //FMX.DialogService.TDialogService.ShowMessage(' ');
     //activer l'animation la premiere fois
     with FloatAnimationHeight do
       begin
@@ -215,7 +227,7 @@ begin
       end
   end
     (*begin
-      //FMX.DialogService.TDialogService.ShowMessage('jus');
+      //FMX.DialogService.TDialogService.ShowMessage(' ');
       with FloatAnimationHeight do
          begin
           Enabled := False;
