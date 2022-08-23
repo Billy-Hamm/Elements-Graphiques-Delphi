@@ -11,14 +11,13 @@ uses
   FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef, FireDAC.Stan.ExprFuncs,
   FireDAC.Phys.SQLiteWrapper.Stat, FireDAC.FMXUI.Wait, Data.DB,
   FireDAC.Comp.Client, FMX.Edit, Fmx.DialogService, FMX.Effects,
-  FMX.Filter.Effects, FMX.Layouts, FMX.Ani, Unit2;
+  FMX.Filter.Effects, FMX.Layouts, FMX.Ani, Unit2, Unit3, uMsgLicence, uFcts;
 
 type
   TForm1 = class(TForm)
     Rectangle1: TRectangle;
     Label1: TLabel;
     AniIndicator1: TAniIndicator;
-    Edit1: TEdit;
     Rectangle2: TRectangle;
     Label2: TLabel;
     Label3: TLabel;
@@ -38,6 +37,13 @@ type
     Button1: TButton;
     Layout2: TLayout;
     Frame21: TFrame2;
+    Button2: TButton;
+    Edit1: TEdit;
+    Button3: TButton;
+    Layout3: TLayout;
+    frMsgLicence1: TfrMsgLicence;
+    Button4: TButton;
+    Button5: TButton;
 
     function PosElemClique(lab: TLabel): Single;
 
@@ -56,6 +62,10 @@ type
     procedure Button1Click(Sender: TObject);
     procedure Frame21Circle1Click(Sender: TObject);
     procedure Frame21Rectangle1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
+    procedure Button5Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -78,6 +88,27 @@ implementation
 procedure TForm1.Button1Click(Sender: TObject);
 begin
   FloatAnimation1.Enabled := true;
+end;
+
+procedure TForm1.Button2Click(Sender: TObject);
+begin
+form3.show;
+end;
+
+procedure TForm1.Button3Click(Sender: TObject);
+begin
+restaurerBoutonConn(Sender);
+end;
+
+procedure TForm1.Button4Click(Sender: TObject);
+begin
+frMsgLicence1.animMsgLicence.StopValue := frMsgLicence1.rectMsgLicence.width;
+frMsgLicence1.animMsgLicence.start;
+end;
+
+procedure TForm1.Button5Click(Sender: TObject);
+begin
+Fofcts.show;
 end;
 
 procedure TForm1.Edit1Change(Sender: TObject);
@@ -264,6 +295,7 @@ begin
   // la tu pourras inserer le code nécéssaire pour verifier les identifiants
   if strtoint(Edit1.Text) = 1 then
   begin
+    lancerAttente(Sender);
     // juste le showmessage il est chiant sur FMX
     FMX.DialogService.TDialogService.ShowMessage('Connexion echouée');
     restaurerBoutonConn(sender);

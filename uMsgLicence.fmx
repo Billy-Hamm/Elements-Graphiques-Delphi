@@ -1,0 +1,34 @@
+object frMsgLicence: TfrMsgLicence
+  Align = Client
+  ClipChildren = True
+  Size.Width = 360.000000000000000000
+  Size.Height = 32.000000000000000000
+  Size.PlatformDefault = False
+  object rectMsgLicence: TRectangle
+    Align = Client
+    Fill.Color = claRed
+    Size.Width = 360.000000000000000000
+    Size.Height = 32.000000000000000000
+    Size.PlatformDefault = False
+    Stroke.Thickness = 0.000000000000000000
+    object Label1: TLabel
+      StyledSettings = []
+      Size.Width = 249.000000000000000000
+      Size.Height = 33.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.Font.Family = 'Roboto'
+      TextSettings.Font.Size = 15.000000000000000000
+      TextSettings.Font.StyleExt = {00070000000000000004000000}
+      TextSettings.FontColor = claWhite
+      Text = 'Votre licence prend fin dans nn jours'
+      object animMsgLicence: TFloatAnimation
+        Duration = 7.000000000000000000
+        OnFinish = animMsgLicenceFinish
+        PropertyName = 'Position.X'
+        StartValue = 0.000000000000000000
+        StartFromCurrent = True
+        StopValue = 0.000000000000000000
+      end
+    end
+  end
+end
