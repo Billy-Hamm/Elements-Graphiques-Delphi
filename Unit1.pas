@@ -1,4 +1,4 @@
-unit Unit1;
+ï»¿unit Unit1;
 
 interface
 
@@ -44,6 +44,14 @@ type
     frMsgLicence1: TfrMsgLicence;
     Button4: TButton;
     Button5: TButton;
+    Button6: TButton;
+    Rectangle5: TRectangle;
+    Rectangle6: TRectangle;
+    FloatAnimation6: TFloatAnimation;
+    Label6: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    ShadowEffect4: TShadowEffect;
 
     function PosElemClique(lab: TLabel): Single;
 
@@ -55,9 +63,9 @@ type
       Shift: TShiftState);
     procedure Rectangle1Click(Sender: TObject);
     //procedure creationRectangleDeSelection(Sender: TObject);
-    procedure Label2Click(Sender: TObject);
-    procedure Label4Click(Sender: TObject);
-    procedure Label3Click(Sender: TObject);
+    procedure Label6Click(Sender: TObject);
+    procedure Label8Click(Sender: TObject);
+    procedure Label7Click(Sender: TObject);
     procedure Rectangle3Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Frame21Circle1Click(Sender: TObject);
@@ -66,6 +74,7 @@ type
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
+    procedure FloatAnimation6Finish(Sender: TObject);
   private
     { Private declarations }
   public
@@ -84,7 +93,7 @@ implementation
 {$R *.fmx}
 
 
-//cette partie la sert à restaurer le bouton à son état normal pour réésssayer
+//cette partie la sert Ã  restaurer le bouton Ã  son Ã©tat normal pour rÃ©Ã©sssayer
 procedure TForm1.Button1Click(Sender: TObject);
 begin
   FloatAnimation1.Enabled := true;
@@ -116,7 +125,14 @@ begin
   restaurerBoutonConn(sender);
 end;
 
-//cette partie sert à capturer le clique sur la fenetre (13 = Entrée)
+//cette partie sert Ã  capturer le clique sur la fenetre (13 = EntrÃ©e)
+procedure TForm1.FloatAnimation6Finish(Sender: TObject);
+begin
+  posFin := Rectangle6.Position.X;
+  posDeb := posFin;
+  FloatAnimation6.Stop;
+end;
+
 procedure TForm1.FormKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char;
   Shift: TShiftState);
 begin
@@ -141,54 +157,37 @@ begin
 end;
 
 
-procedure TForm1.Label2Click(Sender: TObject);
+procedure TForm1.Label6Click(Sender: TObject);
 begin
-  PosElemClique(Label2);
-  if animTrans.Enabled = False then
+with FloatAnimation6 do
   begin
-    animTrans.StartValue := coorX;
-    animTrans.StopValue := Label2.Position.X + 10;
-    animTrans.Enabled:= True;
-    animTrans.Enabled := False;
-  end
-  else
-    begin
-      animTrans.Enabled := False
-    end;
+    StartValue := posDeb;
+    StopValue := label6.Position.X + 10;
+    posDeb := Rectangle6.Position.X;
+    Start;
+  end;
 end;
 
-procedure TForm1.Label3Click(Sender: TObject);
+procedure TForm1.Label7Click(Sender: TObject);
 begin
-  PosElemClique(Label3);
-  if animTrans.Enabled = False then
+with FloatAnimation6 do
   begin
-    animTrans.StartValue := coorX;
-    animTrans.StopValue := Label3.Position.X + 10;
-
-    animTrans.Enabled:= True;
-    animTrans.Enabled := False;
-  end
-  else
-    begin
-      animTrans.Enabled := False
-    end;
+    StartValue := posDeb;
+    StopValue := label7.Position.X + 10;
+    posDeb := Rectangle6.Position.X;
+    Start;
+  end;
 end;
 
-procedure TForm1.Label4Click(Sender: TObject);
+procedure TForm1.Label8Click(Sender: TObject);
 begin
-  PosElemClique(Label4);
-  Label5.Text := FloatToStr(coorX);
-    if animTrans.Enabled = False then
+with FloatAnimation6 do
   begin
-    animTrans.StartValue := coorX;
-    animTrans.StopValue := Label4.Position.X + 10;
-    animTrans.Enabled:= True;
-    animTrans.Enabled := False;
-  end
-  else
-    begin
-      animTrans.Enabled := False
-    end;
+    StartValue := posDeb;
+    StopValue := label8.Position.X + 10;
+    posDeb := Rectangle6.Position.X;
+    Start;
+  end;
 end;
 
 
@@ -289,25 +288,25 @@ end;
 
 (*cette partie va servir a verifier les identifiants avant de soit lancer
 l'application ou sortir un message d'erreur et restaurer le bouton pour
-rééssayer*)
+rÃ©Ã©ssayer*)
 procedure TForm1.verificationIDs(Sender: TObject);
 begin
-  // la tu pourras inserer le code nécéssaire pour verifier les identifiants
+  // la tu pourras inserer le code nÃ©cÃ©ssaire pour verifier les identifiants
   if strtoint(Edit1.Text) = 1 then
   begin
     lancerAttente(Sender);
     // juste le showmessage il est chiant sur FMX
-    FMX.DialogService.TDialogService.ShowMessage('Connexion echouée');
+    FMX.DialogService.TDialogService.ShowMessage('Connexion echouÃ©e');
     restaurerBoutonConn(sender);
   end
     else
     lancerAttente(sender);
-    (*si il se connecte on devra restaurer le bouton de connexion à son état
-    d'origine soit en se decconectant ou juste apres avoir réussie la connexion
-    ce qui est préférable*)
+    (*si il se connecte on devra restaurer le bouton de connexion Ã  son Ã©tat
+    d'origine soit en se decconectant ou juste apres avoir rÃ©ussie la connexion
+    ce qui est prÃ©fÃ©rable*)
     // restaurerBoutonConn(sender)
     (*franchement je met "SENDER" et "SELF" les deux marchent mais je sais pas
-    ce qu'est exactement la différence*)
+    ce qu'est exactement la diffÃ©rence*)
 end;
 
 end.

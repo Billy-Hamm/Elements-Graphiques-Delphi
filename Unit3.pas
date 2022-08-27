@@ -23,6 +23,14 @@ type
     FloatAnimation5: TFloatAnimation;
     Button4: TButton;
     Label1: TLabel;
+    Rectangle4: TRectangle;
+    Rectangle5: TRectangle;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    FloatAnimation6: TFloatAnimation;
+    Label5: TLabel;
+    Label6: TLabel;
     procedure Button1Click(Sender: TObject);
     procedure FloatAnimation1Finish(Sender: TObject);
     procedure FloatAnimation2Finish(Sender: TObject);
@@ -32,6 +40,11 @@ type
     procedure FloatAnimation4Finish(Sender: TObject);
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
+    procedure Label4Click(Sender: TObject);
+    procedure FloatAnimation6Finish(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure Label2Click(Sender: TObject);
+    procedure Label3Click(Sender: TObject);
   private
     { Déclarations privées }
   public
@@ -41,6 +54,7 @@ type
 var
   Form3: TForm3;
   stopAni : Boolean;
+  posDeb, posFin : Single;
 
 implementation
 
@@ -103,11 +117,18 @@ end;
 
 procedure TForm3.FloatAnimation4Finish(Sender: TObject);
 begin
-FloatAnimation4.Stop;
-if stopAni = false then
-FloatAnimation3.Start
-  else
-    exit
+  FloatAnimation4.Stop;
+    if stopAni = false then
+      FloatAnimation3.Start
+    else
+      exit
+end;
+
+procedure TForm3.FloatAnimation6Finish(Sender: TObject);
+begin
+  posFin := Rectangle5.Position.X;
+  posDeb := posFin;
+  FloatAnimation6.Stop;
 end;
 
 procedure TForm3.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -117,6 +138,44 @@ FloatAnimation1.Stop;
 FloatAnimation2.Stop;
 //FloatAnimation3.Stop;
 //FloatAnimation4.Stop;
+end;
+
+procedure TForm3.FormCreate(Sender: TObject);
+begin
+  posDeb := Rectangle5.Position.X;
+end;
+
+procedure TForm3.Label2Click(Sender: TObject);
+begin
+with FloatAnimation6 do
+  begin
+    StartValue := posDeb;
+    StopValue := Label2.Position.X + 10;
+    posDeb := Rectangle5.Position.X;
+    Start;
+  end;
+end;
+
+procedure TForm3.Label3Click(Sender: TObject);
+begin
+with FloatAnimation6 do
+  begin
+    StartValue := posDeb;
+    StopValue := Label3.Position.X + 10;
+    posDeb := Rectangle5.Position.X;
+    Start;
+  end;
+end;
+
+procedure TForm3.Label4Click(Sender: TObject);
+begin
+with FloatAnimation6 do
+  begin
+    StartValue := posDeb;
+    StopValue := label4.Position.X + 10;
+    posDeb := Rectangle5.Position.X;
+    Start;
+  end;
 end;
 
 end.

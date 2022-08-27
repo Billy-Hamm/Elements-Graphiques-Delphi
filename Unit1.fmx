@@ -69,7 +69,7 @@ object Form1: TForm1
       TextSettings.HorzAlign = Center
       Text = 'Facture'
       TabOrder = 2
-      OnClick = Label2Click
+      OnClick = Label6Click
     end
     object Label3: TLabel
       Align = Right
@@ -85,7 +85,7 @@ object Form1: TForm1
       TextSettings.HorzAlign = Center
       Text = 'Dettes'
       TabOrder = 1
-      OnClick = Label3Click
+      OnClick = Label7Click
     end
     object Label4: TLabel
       Align = Client
@@ -100,7 +100,7 @@ object Form1: TForm1
       TextSettings.HorzAlign = Center
       Text = 'Menu'
       TabOrder = 0
-      OnClick = Label4Click
+      OnClick = Label8Click
     end
     object Layout1: TLayout
       Align = Contents
@@ -276,8 +276,8 @@ object Form1: TForm1
       end
     end
     object Button4: TButton
-      Position.X = 80.000000000000000000
-      Position.Y = 152.000000000000000000
+      Position.X = -80.000000000000000000
+      Position.Y = 16.000000000000000000
       Text = 'Button4'
       OnClick = Button4Click
     end
@@ -287,5 +287,92 @@ object Form1: TForm1
     Position.Y = 128.000000000000000000
     Text = 'Button5'
     OnClick = Button5Click
+  end
+  object Button6: TButton
+    Position.X = 248.000000000000000000
+    Position.Y = 240.000000000000000000
+    Text = 'Button6'
+  end
+  object Rectangle5: TRectangle
+    Position.X = 350.000000000000000000
+    Position.Y = 350.000000000000000000
+    Size.Width = 360.000000000000000000
+    Size.Height = 49.000000000000000000
+    Size.PlatformDefault = False
+    Stroke.Thickness = 0.000000000000000000
+    XRadius = 20.000000000000000000
+    YRadius = 20.000000000000000000
+    object Rectangle6: TRectangle
+      Fill.Color = claWhite
+      Margins.Left = 7.000000000000000000
+      Margins.Top = 10.000000000000000000
+      Margins.Right = 7.000000000000000000
+      Margins.Bottom = 10.000000000000000000
+      Position.X = 10.000000000000000000
+      Position.Y = 10.000000000000000000
+      Size.Width = 100.000000000000000000
+      Size.Height = 29.000000000000000000
+      Size.PlatformDefault = False
+      Stroke.Thickness = 0.000000000000000000
+      XRadius = 14.500000000000000000
+      YRadius = 14.500000000000000000
+      object FloatAnimation6: TFloatAnimation
+        Duration = 0.200000002980232200
+        OnFinish = FloatAnimation6Finish
+        PropertyName = 'Position.X'
+        StartValue = 0.000000000000000000
+        StopValue = 0.000000000000000000
+      end
+      object ShadowEffect4: TShadowEffect
+        Distance = 3.000000000000000000
+        Direction = 45.000000000000000000
+        Softness = 0.300000011920929000
+        Opacity = 0.600000023841857900
+        ShadowColor = claBlack
+      end
+    end
+    object Label6: TLabel
+      Align = MostRight
+      Cursor = crHandPoint
+      StyledSettings = [Style]
+      HitTest = True
+      Position.X = 240.000000000000000000
+      Size.Width = 120.000000000000000000
+      Size.Height = 49.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.Font.Family = 'Roboto'
+      TextSettings.Font.Size = 16.000000000000000000
+      TextSettings.HorzAlign = Center
+      Text = 'Label6'
+      OnClick = Label6Click
+    end
+    object Label7: TLabel
+      Align = MostLeft
+      Cursor = crHandPoint
+      StyledSettings = [Style]
+      HitTest = True
+      Size.Width = 120.000000000000000000
+      Size.Height = 49.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.Font.Family = 'Roboto'
+      TextSettings.Font.Size = 16.000000000000000000
+      TextSettings.HorzAlign = Center
+      Text = 'Label7'
+      OnClick = Label7Click
+    end
+    object Label8: TLabel
+      Align = Client
+      Cursor = crHandPoint
+      StyledSettings = [Style]
+      HitTest = True
+      Size.Width = 120.000000000000000000
+      Size.Height = 49.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.Font.Family = 'Roboto'
+      TextSettings.Font.Size = 16.000000000000000000
+      TextSettings.HorzAlign = Center
+      Text = 'Label8'
+      OnClick = Label8Click
+    end
   end
 end
