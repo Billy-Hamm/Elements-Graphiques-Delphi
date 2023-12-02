@@ -1,4 +1,4 @@
-﻿unit Unit1;
+﻿unit UMain;
 
 interface
 
@@ -11,10 +11,11 @@ uses
   FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef, FireDAC.Stan.ExprFuncs,
   FireDAC.Phys.SQLiteWrapper.Stat, FireDAC.FMXUI.Wait, Data.DB,
   FireDAC.Comp.Client, FMX.Edit, Fmx.DialogService, FMX.Effects,
-  FMX.Filter.Effects, FMX.Layouts, FMX.Ani, Unit2, Unit3, uMsgLicence, uFcts;
+  FMX.Filter.Effects, FMX.Layouts, FMX.Ani, Unit2, Unit3, uMsgLicence, uFcts,
+  UBtnSw;
 
 type
-  TForm1 = class(TForm)
+  TFoMain = class(TForm)
     Rectangle1: TRectangle;
     Label1: TLabel;
     AniIndicator1: TAniIndicator;
@@ -22,7 +23,7 @@ type
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
-    Layout1: TLayout;
+    LayRectSel: TLayout;
     ShadowEffect1: TShadowEffect;
     rectSel: TRectangle;
     animTrans: TFloatAnimation;
@@ -35,8 +36,8 @@ type
     FloatAnimation1: TFloatAnimation;
     ShadowEffect3: TShadowEffect;
     Button1: TButton;
-    Layout2: TLayout;
-    Frame21: TFrame2;
+    LayBtnSwitch: TLayout;
+    Frame21: TFrBtnSw;
     Button2: TButton;
     Edit1: TEdit;
     Button3: TButton;
@@ -54,6 +55,8 @@ type
     ShadowEffect4: TShadowEffect;
     Label9: TLabel;
     ScrollBoxMain: TScrollBox;
+    LayBtnConn: TLayout;
+    LayRectSelMain: TLayout;
 
 
 
@@ -90,7 +93,7 @@ type
   end;
 
 var
-  Form1: TForm1;
+  FoMain: TFoMain;
   rectangleDeSelection : TRectangle;
   coorX : Single;
   elemClick : integer;
@@ -101,75 +104,75 @@ implementation
 
 
 //cette partie la sert à restaurer le bouton à son état normal pour réésssayer
-procedure TForm1.Button1Click(Sender: TObject);
+procedure TFoMain.Button1Click(Sender: TObject);
 begin
   FloatAnimation1.Enabled := true;
 end;
 
-procedure TForm1.Button2Click(Sender: TObject);
+procedure TFoMain.Button2Click(Sender: TObject);
 begin
 form3.show;
 end;
 
-procedure TForm1.Button3Click(Sender: TObject);
+procedure TFoMain.Button3Click(Sender: TObject);
 begin
 restaurerBoutonConn(Sender);
 end;
 
-procedure TForm1.Button4Click(Sender: TObject);
+procedure TFoMain.Button4Click(Sender: TObject);
 begin
 frMsgLicence1.animMsgLicence.StopValue := frMsgLicence1.rectMsgLicence.width;
 frMsgLicence1.animMsgLicence.start;
 end;
 
-procedure TForm1.Button5Click(Sender: TObject);
+procedure TFoMain.Button5Click(Sender: TObject);
 begin
 Fofcts.show;
 end;
 
-procedure TForm1.Edit1Change(Sender: TObject);
+procedure TFoMain.Edit1Change(Sender: TObject);
 begin
   restaurerBoutonConn(sender);
 end;
 
 //cette partie sert à capturer le clique sur la fenetre (13 = Entrée)
-procedure TForm1.FloatAnimation6Finish(Sender: TObject);
+procedure TFoMain.FloatAnimation6Finish(Sender: TObject);
 begin
   posFin := Rectangle6.Position.X;
   posDeb := posFin;
   FloatAnimation6.Stop;
 end;
 
-procedure TForm1.FormKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char;
+procedure TFoMain.FormKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char;
   Shift: TShiftState);
 begin
   if key = 13 then
   verificationIDs(sender);
 end;
 
-procedure TForm1.Frame21Circle1Click(Sender: TObject);
+procedure TFoMain.Frame21Circle1Click(Sender: TObject);
 begin
   Frame21.Circle1Click(Sender);
 end;
 
-procedure TForm1.Frame21Rectangle1Click(Sender: TObject);
+procedure TFoMain.Frame21Rectangle1Click(Sender: TObject);
 begin
   Frame21.Rectangle1Click(Sender);
 end;
 
-function TForm1.getElemPosX(ElemClick: TControl): Single;
+function TFoMain.getElemPosX(ElemClick: TControl): Single;
 begin
   Result := ElemClick.position.X;
 end;
 
-function TForm1.PosElemClique(lab: TLabel): Single;
+function TFoMain.PosElemClique(lab: TLabel): Single;
 begin
   coorX := lab.Position.X;
   Result := coorX
 end;
 
 
-procedure TForm1.Label6Click(Sender: TObject);
+procedure TFoMain.Label6Click(Sender: TObject);
 begin
   with FloatAnimation6 do
     begin
@@ -180,7 +183,7 @@ begin
     end;
 end;
 
-procedure TForm1.Label7Click(Sender: TObject);
+procedure TFoMain.Label7Click(Sender: TObject);
 begin
   with FloatAnimation6 do
     begin
@@ -191,7 +194,7 @@ begin
     end;
 end;
 
-procedure TForm1.Label8Click(Sender: TObject);
+procedure TFoMain.Label8Click(Sender: TObject);
 begin
   with FloatAnimation6 do
     begin
@@ -229,7 +232,7 @@ begin
   end;
 end;*)
 
-procedure TForm1.lancerAttente(Sender: TObject);
+procedure TFoMain.lancerAttente(Sender: TObject);
 begin
   Label1.Visible := false;
   Rectangle1.Enabled := false;
@@ -243,12 +246,13 @@ begin
 end;
 
 
-procedure TForm1.Rectangle1Click(Sender: TObject);
+procedure TFoMain.Rectangle1Click(Sender: TObject);
 begin
   verificationIDs(sender);
+
 end;
 
-procedure TForm1.Rectangle3Click(Sender: TObject);
+procedure TFoMain.Rectangle3Click(Sender: TObject);
 begin
   FloatAnimationWidth.Enabled := False;
   FloatAnimationHeight.Enabled := False;
@@ -285,7 +289,7 @@ begin
     end;*)
 end;
 
-procedure TForm1.restaurerBoutonConn(Sender: TObject);
+procedure TFoMain.restaurerBoutonConn(Sender: TObject);
 begin
   Label1.Visible := true;
   Rectangle1.Enabled := true;
@@ -301,13 +305,13 @@ end;
 (*cette partie va servir a verifier les identifiants avant de soit lancer
 l'application ou sortir un message d'erreur et restaurer le bouton pour
 rééssayer*)
-procedure TForm1.verificationIDs(Sender: TObject);
+procedure TFoMain.verificationIDs(Sender: TObject);
 begin
-  // la tu pourras inserer le code nécéssaire pour verifier les identifiants
-  if strtoint(Edit1.Text) = 1 then
+
+  // la on insere le code nécéssaire pour verifier les identifiants
+  if strtoint (Edit1.Text) = 1 then
   begin
     lancerAttente(Sender);
-    // juste le showmessage il est chiant sur FMX
     FMX.DialogService.TDialogService.ShowMessage('Connexion echouée');
     restaurerBoutonConn(sender);
   end
