@@ -12,7 +12,7 @@ uses
   FireDAC.Phys.SQLiteWrapper.Stat, FireDAC.FMXUI.Wait, Data.DB,
   FireDAC.Comp.Client, FMX.Edit, Fmx.DialogService, FMX.Effects,
   FMX.Filter.Effects, FMX.Layouts, FMX.Ani, Unit2, Unit3, uMsgLicence, uFcts,
-  UBtnSw;
+  UBtnSw, DM1;
 
 type
   TFoMain = class(TForm)
@@ -35,17 +35,16 @@ type
     Rectangle4: TRectangle;
     FloatAnimation1: TFloatAnimation;
     ShadowEffect3: TShadowEffect;
-    Button1: TButton;
-    LayBtnSwitch: TLayout;
+    BtnRectAnim: TButton;
     Frame21: TFrBtnSw;
-    Button2: TButton;
+    BtnFoShow: TButton;
     Edit1: TEdit;
     Button3: TButton;
     LayLicenceMsg: TLayout;
     frMsgLicence1: TfrMsgLicence;
     Button4: TButton;
-    Button5: TButton;
-    Button6: TButton;
+    BtnFctShow: TButton;
+    btnDBTest: TButton;
     Rectangle5: TRectangle;
     Rectangle6: TRectangle;
     FloatAnimation6: TFloatAnimation;
@@ -57,6 +56,13 @@ type
     ScrollBoxMain: TScrollBox;
     LayBtnConn: TLayout;
     LayRectSelMain: TLayout;
+    labDbStatus: TLabel;
+    OpenDialog1: TOpenDialog;
+    layDB: TLayout;
+    layRectSel2: TLayout;
+    BtnDataDisp: TButton;
+    labDataId: TLabel;
+    labDataNomCan: TLabel;
 
 
 
@@ -72,18 +78,23 @@ type
     procedure Label8Click(Sender: TObject);
     procedure Label7Click(Sender: TObject);
     procedure Rectangle3Click(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
+    procedure BtnRectAnimClick(Sender: TObject);
     procedure Frame21Circle1Click(Sender: TObject);
     procedure Frame21Rectangle1Click(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
+    procedure BtnFoShowClick(Sender: TObject);
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
-    procedure Button5Click(Sender: TObject);
+    procedure BtnFctShowClick(Sender: TObject);
     procedure FloatAnimation6Finish(Sender: TObject);
 
 
     function PosElemClique(lab: TLabel): Single;
     function getElemPosX(ElemClick : TControl) : single;
+    procedure btnDBTestClick(Sender: TObject);
+    procedure BtnDataDispClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure DataDisplay(Sender : TobJect);
+
 
   private
     { Private declarations }
@@ -97,6 +108,7 @@ var
   rectangleDeSelection : TRectangle;
   coorX : Single;
   elemClick : integer;
+  LoadSuccess : boolean;
 
 implementation
 
@@ -104,12 +116,12 @@ implementation
 
 
 //cette partie la sert à restaurer le bouton à son état normal pour réésssayer
-procedure TFoMain.Button1Click(Sender: TObject);
+procedure TFoMain.BtnRectAnimClick(Sender: TObject);
 begin
   FloatAnimation1.Enabled := true;
 end;
 
-procedure TFoMain.Button2Click(Sender: TObject);
+procedure TFoMain.BtnFoShowClick(Sender: TObject);
 begin
 form3.show;
 end;
@@ -125,10 +137,111 @@ frMsgLicence1.animMsgLicence.StopValue := frMsgLicence1.rectMsgLicence.width;
 frMsgLicence1.animMsgLicence.start;
 end;
 
-procedure TFoMain.Button5Click(Sender: TObject);
+procedure TFoMain.BtnFctShowClick(Sender: TObject);
 begin
 Fofcts.show;
 end;
+
+procedure TFoMain.DataDisplay(Sender: TObject);
+begin
+  try
+    labDataNomCan.text := '';
+    labDataId.text := '';
+    while not DataModule4.Adoquery1.Eof do
+    begin
+      labDataId.text := labDataId.text + DataModule4.AdoQuery1.FieldByName('IdCan').AsString + sLineBreak;
+      labDataNomCan.text := labDataNomCan.text + DataModule4.AdoQuery1.FieldByName('NomCan').AsString + sLineBreak;
+
+      DataModule4.AdoQuery1.Next;
+    end;
+  Except
+    TDialogService.ShowMessage('DB Connexion Failed')
+  end;
+end;
+
+procedure TFoMain.BtnDataDispClick(Sender: TObject);
+begin
+  if LoadSuccess = False then
+    begin
+      btnDBTestClick(Sender);
+      DataDisplay(sender)
+    end
+      else
+        DataDisplay(Sender)
+end;
+
+procedure TFoMain.btnDBTestClick(Sender: TObject);
+
+var
+  dbInfo, dbLoc : string;
+
+begin
+  LoadSuccess := False;
+  try
+    DataModule4.ADOConnection1.ConnectionString := 'Provider=MSOLEDBSQL.1;Integrated Security=SSPI;Persist Security Info=False;User ID="";Initial Catalog=TestDB;Data Source=ASHEN-ACER\ASHEN;Initial File Name="";Trust Server Certificate=True;Server SPN="";Authentication="";Access Token="";';
+//    dbinfo := 'ConName : ' + DataModule4.ADOConnection1.ConnectionString + sLineBreak ;
+
+    DataModule4.ADOConnection1.loginPrompt := False;
+    dbInfo := dbInfo + 'Login prompt : ' + BoolToStr ( DataModule4.ADOConnection1.LoginPrompt ) + sLineBreak;
+
+    DataModule4.ADOQuery1.Connection := DataModule4.ADOconnection1;
+    dbinfo := dbinfo +  'Conn : ' + DataModule4.ADOQuery1.Connection.Name + sLineBreak ;
+
+//    DataModule4.SQLConnection1.DriverName := 'Sqlite';
+//    dbInfo := dbInfo + 'DriverName : ' + DataModule4.SQLConnection1.connectionName + sLineBreak;
+
+    with DataModule4.ADOQuery1 do
+    begin
+      SQL.Text := '';
+      SQL.Text := 'select * from TestTable';
+      Active := True;
+    end;
+    dbInfo := dbInfo + 'Query status : ' + BoolToStr ( DataModule4.ADOQuery1.Active ) + sLineBreak;
+
+    Datamodule4.Datasource1.Dataset := Datamodule4.Adoquery1;
+    dbInfo := dbInfo + 'DataSet : ' + Datamodule4.Datasource1.Dataset.Name + sLineBreak;
+
+
+//      try
+//        OpenDialog1.Filter := ('Sqlite Database|*.db|tous les fichiers|*.*');
+//        OpenDialog1.Execute;
+//        dbloc := OpenDialog1.FileName;
+//
+//        DataModule4.SQLConnection1.Params [0] := 'sqlite' ;
+//        DataModule4.SQLConnection1.Params [1] := dbLoc ;
+//
+//        dbInfo := dbInfo + 'dbLoc : ' + DataModule4.SQLConnection1.Params [1] + sLineBreak;
+//      except
+//        TDialogService.ShowMessage('Fichier invalide');
+//      end;
+
+//    DataModule4.SQLConnection1.connected := True;
+//    dbInfo := dbInfo + 'Connected : ' + BoolToStr ( DataModule4.SQLConnection1.Connected ) + sLineBreak;
+
+//      try
+//        DataModule4.SQLTable1.SQLConnection := DataModule4.SQLConnection1;
+//        TDialogService.ShowMessage('sql Conn');
+//
+//        DataModule4.SQLTable1.TableName := 'ENFANTS';
+//        TDialogService.ShowMessage('table name');
+//
+//        DataModule4.SQLTable1.Active := True;
+//        TDialogService.ShowMessage('activation');
+//
+//        TDialogService.ShowMessage('Table loaded');
+//
+//      except
+//        TDialogService.ShowMessage('file is not a database or is encrypted');
+//      end;
+
+//    TDialogService.ShowMessage('DB successfully connected.');
+    labDbStatus.Text := dbinfo;
+    loadsuccess := True;
+  Except
+    TDialogService.ShowMessage('File could not be loaded');
+  end;
+end;
+
 
 procedure TFoMain.Edit1Change(Sender: TObject);
 begin
@@ -141,6 +254,11 @@ begin
   posFin := Rectangle6.Position.X;
   posDeb := posFin;
   FloatAnimation6.Stop;
+end;
+
+procedure TFoMain.FormCreate(Sender: TObject);
+begin
+  LoadSuccess := false;
 end;
 
 procedure TFoMain.FormKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char;
