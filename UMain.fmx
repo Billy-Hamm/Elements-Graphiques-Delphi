@@ -245,16 +245,16 @@ object FoMain: TFoMain
         Size.PlatformDefault = False
         TextSettings.VertAlign = Leading
         Text = 'labDbStatus'
-        TabOrder = 18
+        TabOrder = 20
       end
       object btnDBTest: TButton
-        Position.X = 32.000000000000000000
+        Position.X = 20.000000000000000000
         Position.Y = 32.000000000000000000
-        Size.Width = 80.000000000000000000
+        Size.Width = 110.000000000000000000
         Size.Height = 49.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 7
-        Text = 'DB Test'
+        TabOrder = 8
+        Text = 'TSQL DB Test'
         OnClick = btnDBTestClick
       end
       object OpenDialog1: TOpenDialog
@@ -263,21 +263,25 @@ object FoMain: TFoMain
         Left = 184
         Top = 136
       end
-      object BtnDataDisp: TButton
-        Position.X = 32.000000000000000000
+      object btnDataDisp: TButton
+        Position.X = 20.000000000000000000
         Position.Y = 89.000000000000000000
-        TabOrder = 19
-        Text = 'Data Display'
-        OnClick = BtnDataDispClick
+        Size.Width = 110.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 21
+        Text = 'TSQL Data Display'
+        OnClick = btnDataDispClick
       end
       object labDataId: TLabel
         Align = Right
-        Position.X = 679.000000000000000000
+        Margins.Right = 200.000000000000000000
+        Position.X = 479.000000000000000000
         Size.Width = 150.000000000000000000
         Size.Height = 213.000000000000000000
         Size.PlatformDefault = False
         Text = 'Sample Text'
-        TabOrder = 17
+        TabOrder = 18
       end
       object labDataNomCan: TLabel
         Align = Right
@@ -286,7 +290,33 @@ object FoMain: TFoMain
         Size.Height = 213.000000000000000000
         Size.PlatformDefault = False
         Text = 'Sample Text'
-        TabOrder = 16
+        TabOrder = 17
+      end
+      object btnSqliteDBTest: TButton
+        Position.X = 20.000000000000000000
+        Position.Y = 119.000000000000000000
+        Size.Width = 110.000000000000000000
+        Size.Height = 49.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 7
+        Text = 'Sqlite DB Test'
+        OnClick = btnSqliteDBTestClick
+      end
+      object btnSqliteDisp: TButton
+        Position.X = 20.000000000000000000
+        Position.Y = 176.000000000000000000
+        Size.Width = 110.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 19
+        Text = 'Sqlite Data Display'
+        OnClick = btnSqliteDispClick
+      end
+      object labLoop: TLabel
+        Position.X = 160.000000000000000000
+        Position.Y = 152.000000000000000000
+        Text = 'labLoop'
+        TabOrder = 22
       end
     end
     object layRectSel2: TLayout

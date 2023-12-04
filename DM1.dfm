@@ -26,17 +26,24 @@ object DataModule4: TDataModule4
     Left = 264
     Top = 16
   end
-  object ADOConnection2: TADOConnection
-    Left = 40
-    Top = 104
-  end
-  object ADOQuery2: TADOQuery
-    Parameters = <>
-    Left = 152
-    Top = 104
-  end
   object DataSource2: TDataSource
-    Left = 272
-    Top = 104
+    Left = 264
+    Top = 112
+  end
+  object SQLConnection1: TSQLConnection
+    ConnectionName = 'SQLITECONNECTION'
+    DriverName = 'Sqlite'
+    LoginPrompt = False
+    Params.Strings = (
+      'DriverName=Sqlite'
+      'Database=F:\Delphi Apps\BdD\sqlitedb.db')
+    Connected = True
+    Left = 40
+    Top = 112
+  end
+  object SQLQuery1: TSQLQuery
+    Params = <>
+    Left = 152
+    Top = 120
   end
 end

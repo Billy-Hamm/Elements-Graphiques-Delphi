@@ -60,9 +60,12 @@ type
     OpenDialog1: TOpenDialog;
     layDB: TLayout;
     layRectSel2: TLayout;
-    BtnDataDisp: TButton;
+    btnDataDisp: TButton;
     labDataId: TLabel;
     labDataNomCan: TLabel;
+    btnSqliteDBTest: TButton;
+    btnSqliteDisp: TButton;
+    labLoop: TLabel;
 
 
 
@@ -91,9 +94,11 @@ type
     function PosElemClique(lab: TLabel): Single;
     function getElemPosX(ElemClick : TControl) : single;
     procedure btnDBTestClick(Sender: TObject);
-    procedure BtnDataDispClick(Sender: TObject);
+    procedure btnDataDispClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure DataDisplay(Sender : TobJect);
+    procedure btnSqliteDBTestClick(Sender: TObject);
+    procedure btnSqliteDispClick(Sender: TObject);
 
 
   private
@@ -109,6 +114,7 @@ var
   coorX : Single;
   elemClick : integer;
   LoadSuccess : boolean;
+  dbInfo : string;
 
 implementation
 
@@ -121,9 +127,72 @@ begin
   FloatAnimation1.Enabled := true;
 end;
 
+procedure TFoMain.btnSqliteDBTestClick(Sender: TObject);
+begin
+  try
+    with DataModule4.SQLConnection1 do
+    begin
+      LoginPrompt := False;
+      dbInfo := dbInfo + 'Login prompt : ' + BoolToStr ( DataModule4.SQLConnection1.LoginPrompt ) + sLineBreak;
+
+      ConnectionName := 'SQLITECONNECTION';
+      dbInfo := dbInfo + 'ConnName : ' + DataModule4.SQLConnection1.ConnectionName + sLineBreak;
+
+      DriverName := 'Sqlite';
+      dbInfo := dbInfo + 'Driver : ' + DataModule4.SQLConnection1.Params [0] + sLineBreak;
+
+      Params [1] := 'F:\Delphi Apps\BdD\mabase.db';
+      dbInfo := dbInfo + 'Database Path : ' + DataModule4.SQLConnection1.Params [1] + sLineBreak;
+
+      Connected := True;
+      dbInfo := dbInfo + 'Connected : ' + BoolToStr ( DataModule4.SQLConnection1.Connected ) + sLineBreak;
+      
+      labDbStatus.Text := dbInfo;
+    end;
+  Except
+    TDialogService.ShowMessage('DB connection failed')
+  end;
+end;
+
 procedure TFoMain.BtnFoShowClick(Sender: TObject);
 begin
 form3.show;
+end;
+
+procedure TFoMain.btnSqliteDispClick(Sender: TObject);
+var
+I : integer;
+begin
+  try
+    with DataModule4.SQLQuery1 do
+    begin
+
+      SQLConnection:= DataModule4.SQLConnection1;
+
+      Close;
+
+      SQL.Add('Select * From ets');
+
+      Active := True;
+
+    end;
+
+    labDataId.Text := '';
+    labDataNomCan.Text := '';
+
+  while not DataModule4.SQLQuery1.Eof do
+    begin
+
+      labDataId.Text := labDataId.Text + DataModule4.SQLQuery1.FieldByName('id_ets').AsString + sLineBreak;
+      labDataNomCan.text := labDataNomCan.text + DataModule4.SQLQuery1.FieldByName('nom_ets').AsString + sLineBreak;
+
+      DataModule4.SQLQuery1.Next;
+    end;
+
+  Except
+  On E : Exception do
+    TDialogService.ShowMessage(E.Message)
+  end;
 end;
 
 procedure TFoMain.Button3Click(Sender: TObject);
@@ -159,7 +228,7 @@ begin
   end;
 end;
 
-procedure TFoMain.BtnDataDispClick(Sender: TObject);
+procedure TFoMain.btnDataDispClick(Sender: TObject);
 begin
   if LoadSuccess = False then
     begin
@@ -173,7 +242,7 @@ end;
 procedure TFoMain.btnDBTestClick(Sender: TObject);
 
 var
-  dbInfo, dbLoc : string;
+  dbLoc : string;
 
 begin
   LoadSuccess := False;
