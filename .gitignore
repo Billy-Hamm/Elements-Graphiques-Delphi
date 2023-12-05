@@ -25,8 +25,7 @@ Thumbs.db
 *.wmv
 
 *.identcache
-*.dproj*
-*.local.*
+*.local
 Project1.dproj.local
 *.~32~
 __history/Unit1.fmx.~32~
