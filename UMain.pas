@@ -12,7 +12,10 @@ uses
   FireDAC.Phys.SQLiteWrapper.Stat, FireDAC.FMXUI.Wait, Data.DB,
   FireDAC.Comp.Client, FMX.Edit, Fmx.DialogService, FMX.Effects,
   FMX.Filter.Effects, FMX.Layouts, FMX.Ani, Unit2, Unit3, uMsgLicence, uFcts,
-  UBtnSw, DM1;
+  UBtnSw, DM1, System.Rtti, FMX.Grid.Style, Data.Bind.EngExt, Fmx.Bind.DBEngExt,
+  Fmx.Bind.Grid, System.Bindings.Outputs, Fmx.Bind.Editors,
+  Data.Bind.Components, Data.Bind.Grid, Data.Bind.DBScope, FMX.ScrollBox,
+  FMX.Grid;
 
 type
   TFoMain = class(TForm)
@@ -66,6 +69,7 @@ type
     btnSqliteDBTest: TButton;
     btnSqliteDisp: TButton;
     labLoop: TLabel;
+    btnGetParams: TButton;
 
 
 
@@ -99,11 +103,14 @@ type
     procedure DataDisplay(Sender : TobJect);
     procedure btnSqliteDBTestClick(Sender: TObject);
     procedure btnSqliteDispClick(Sender: TObject);
+    procedure btnGetParamsClick(Sender: TObject);
+    function DBConStatus(): Boolean;
 
 
   private
     { Private declarations }
   public
+  AlreadyConn, LoadSuccess : boolean;
 
     { Public declarations }
   end;
@@ -113,7 +120,6 @@ var
   rectangleDeSelection : TRectangle;
   coorX : Single;
   elemClick : integer;
-  LoadSuccess : boolean;
   dbInfo : string;
 
 implementation
@@ -127,31 +133,90 @@ begin
   FloatAnimation1.Enabled := true;
 end;
 
+function TFoMain.DBConStatus(): Boolean;
+var
+dbFileLoc : TFileName;
+begin
+  if AlreadyConn = False then
+    try
+      AlreadyConn:= True;
+      with DataModule4.FDConnection1 do
+      begin
+        labDbStatus.Text.Empty;
+
+        LoginPrompt := False;
+        dbInfo := dbInfo + 'Login prompt : ' + BoolToStr ( DataModule4.FDConnection1.LoginPrompt ) + sLineBreak;
+
+        DriverName := 'SQLite';
+        dbInfo := dbInfo + 'DriverName : ' + DataModule4.FDConnection1.DriverName + sLineBreak;
+
+        //Verification for file existence :
+        if FileExists('F:\Delphi Apps\BdD\sqliktedb.db') = True then
+          begin
+            Params.Database := ('F:\Delphi Apps\BdD\sqlitedb.db');
+            dbInfo := dbInfo + 'Database path : ' + DataModule4.FDConnection1.Params.Database + sLineBreak;
+          end
+        else
+        begin
+          TDialogService.ShowMessage('Database file requested not Found');
+          with OpenDialog1 do
+          begin
+            Title := 'Open SQLite (.db) file';
+            Filter := ('Sqlite Database|*.db|tous les fichiers|*.*');
+            Execute;
+          end;
+          dbFileLoc := OpenDialog1.FileName;
+          Params.Database := (dbFileLoc);
+          dbInfo := dbInfo + 'Database path : ' + DataModule4.FDConnection1.Params.Database + sLineBreak;
+        end;
+
+
+        Connected := True;
+        dbInfo := dbInfo + 'Connected : ' + BoolToStr ( DataModule4.FDConnection1.Connected ) + sLineBreak;
+
+        labDbStatus.Text := dbInfo;
+
+        Result := True;
+      end;
+    Except
+      AlreadyConn := False;
+      Result := False;
+    end
+
+  else
+
+end;
+
 procedure TFoMain.btnSqliteDBTestClick(Sender: TObject);
 begin
-  try
-    with DataModule4.SQLConnection1 do
-    begin
-      LoginPrompt := False;
-      dbInfo := dbInfo + 'Login prompt : ' + BoolToStr ( DataModule4.SQLConnection1.LoginPrompt ) + sLineBreak;
+DBConStatus;
+//  if AlreadyConn = False then
+//    try
+//      AlreadyConn:= True;
+//      with DataModule4.FDConnection1 do
+//      begin
+//        labDbStatus.Text.Empty;
+//        LoginPrompt := False;
+//        dbInfo := dbInfo + 'Login prompt : ' + BoolToStr ( DataModule4.FDConnection1.LoginPrompt ) + sLineBreak;
+//
+//        DriverName := 'SQLite';
+//        dbInfo := dbInfo + 'DriverName : ' + DataModule4.FDConnection1.DriverName + sLineBreak;
+//
+//        Params.Database := ('F:\Delphi Apps\BdD\sqlitedb.db');
+//        dbInfo := dbInfo + 'Database path : ' + DataModule4.FDConnection1.Params.Database + sLineBreak;
+//
+//        Connected := True;
+//        dbInfo := dbInfo + 'Connected : ' + BoolToStr ( DataModule4.FDConnection1.Connected ) + sLineBreak;
+//
+//        labDbStatus.Text := dbInfo;
+//      end;
+//    Except
+//      TDialogService.ShowMessage('DB connection failed');
+//      AlreadyConn := False;
+//    end
+//
+//  else
 
-      ConnectionName := 'SQLITECONNECTION';
-      dbInfo := dbInfo + 'ConnName : ' + DataModule4.SQLConnection1.ConnectionName + sLineBreak;
-
-      DriverName := 'Sqlite';
-      dbInfo := dbInfo + 'Driver : ' + DataModule4.SQLConnection1.Params [0] + sLineBreak;
-
-      Params [1] := 'F:\Delphi Apps\BdD\mabase.db';
-      dbInfo := dbInfo + 'Database Path : ' + DataModule4.SQLConnection1.Params [1] + sLineBreak;
-
-      Connected := True;
-      dbInfo := dbInfo + 'Connected : ' + BoolToStr ( DataModule4.SQLConnection1.Connected ) + sLineBreak;
-      
-      labDbStatus.Text := dbInfo;
-    end;
-  Except
-    TDialogService.ShowMessage('DB connection failed')
-  end;
 end;
 
 procedure TFoMain.BtnFoShowClick(Sender: TObject);
@@ -159,40 +224,47 @@ begin
 form3.show;
 end;
 
-procedure TFoMain.btnSqliteDispClick(Sender: TObject);
-var
-I : integer;
+procedure TFoMain.btnGetParamsClick(Sender: TObject);
+var i : integer;
 begin
-  try
-    with DataModule4.SQLQuery1 do
-    begin
+//  for i  := 0 to Length( DataModule4.FDConnection1.Params) do
+//  begin
+    labDbStatus.Text := labDbStatus.Text + BoolToStr(btnGetParams.Enabled)
+//  end;
 
-      SQLConnection:= DataModule4.SQLConnection1;
+end;
 
-      Close;
+procedure TFoMain.btnSqliteDispClick(Sender: TObject);
+begin
+    if DBConStatus = True then
+      begin
+        with DataModule4.FDQuery1 do
+        begin
 
-      SQL.Add('Select * From ets');
+          Connection := DataModule4.FDConnection1;
 
-      Active := True;
+          SQL.text := ('Select * From ets');
 
-    end;
+          Active := True;
 
-    labDataId.Text := '';
-    labDataNomCan.Text := '';
+        end;
 
-  while not DataModule4.SQLQuery1.Eof do
-    begin
+        labDataId.Text := '';
+        labDataNomCan.Text := '';
 
-      labDataId.Text := labDataId.Text + DataModule4.SQLQuery1.FieldByName('id_ets').AsString + sLineBreak;
-      labDataNomCan.text := labDataNomCan.text + DataModule4.SQLQuery1.FieldByName('nom_ets').AsString + sLineBreak;
+//Display the data
+      while not DataModule4.FDQuery1.Eof do
+        begin
 
-      DataModule4.SQLQuery1.Next;
-    end;
+          labDataId.Text := labDataId.Text + DataModule4.FDQuery1.FieldByName('id_ets').AsString + sLineBreak;
+          labDataNomCan.text := labDataNomCan.text + DataModule4.FDQuery1.FieldByName('nom_ets').AsString + sLineBreak;
 
-  Except
-  On E : Exception do
-    TDialogService.ShowMessage(E.Message)
-  end;
+          DataModule4.FDQuery1.Next;
+        end;
+      end
+    else
+    TDialogService.ShowMessage('DataBase Connection failed')
+
 end;
 
 procedure TFoMain.Button3Click(Sender: TObject);
@@ -327,7 +399,8 @@ end;
 
 procedure TFoMain.FormCreate(Sender: TObject);
 begin
-  LoadSuccess := false;
+  LoadSuccess := False;
+  alreadyConn := False;
 end;
 
 procedure TFoMain.FormKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char;

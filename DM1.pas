@@ -9,7 +9,8 @@ uses
   FireDAC.Phys.SQLiteDef, FireDAC.Stan.ExprFuncs,
   FireDAC.Phys.SQLiteWrapper.Stat, FireDAC.FMXUI.Wait, Data.DB,
   FireDAC.Comp.Client, Data.DbxSqlite, Data.SqlExpr, Data.FMTBcd,
-  Data.DBXCommon, IPPeerClient, Data.Win.ADODB;
+  Data.DBXCommon, IPPeerClient, Data.Win.ADODB, FireDAC.Stan.Param,
+  FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, FireDAC.Comp.DataSet;
 
 type
   TDataModule4 = class(TDataModule)
@@ -17,8 +18,10 @@ type
     ADOQuery1: TADOQuery;
     DataSource1: TDataSource;
     DataSource2: TDataSource;
-    SQLConnection1: TSQLConnection;
     SQLQuery1: TSQLQuery;
+    SQLConnection1: TSQLConnection;
+    FDConnection1: TFDConnection;
+    FDQuery1: TFDQuery;
   private
     { Déclarations privées }
   public

@@ -1,6 +1,6 @@
 object DataModule4: TDataModule4
-  Height = 250
-  Width = 584
+  Height = 386
+  Width = 668
   object ADOConnection1: TADOConnection
     ConnectionString = 
       'Provider=MSOLEDBSQL.1;Integrated Security=SSPI;Persist Security ' +
@@ -30,20 +30,28 @@ object DataModule4: TDataModule4
     Left = 264
     Top = 112
   end
+  object SQLQuery1: TSQLQuery
+    Params = <>
+    Left = 152
+    Top = 112
+  end
   object SQLConnection1: TSQLConnection
     ConnectionName = 'SQLITECONNECTION'
     DriverName = 'Sqlite'
     LoginPrompt = False
     Params.Strings = (
       'DriverName=Sqlite'
-      'Database=F:\Delphi Apps\BdD\sqlitedb.db')
-    Connected = True
+      'Database=test.db')
     Left = 40
     Top = 112
   end
-  object SQLQuery1: TSQLQuery
-    Params = <>
+  object FDConnection1: TFDConnection
+    Left = 40
+    Top = 200
+  end
+  object FDQuery1: TFDQuery
+    Connection = FDConnection1
     Left = 152
-    Top = 120
+    Top = 200
   end
 end
