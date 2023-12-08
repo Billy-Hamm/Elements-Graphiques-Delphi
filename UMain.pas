@@ -135,7 +135,7 @@ end;
 
 function TFoMain.DBConStatus(): Boolean;
 var
-dbFileLoc : TFileName;
+  dbFileLoc : TFileName;
 begin
   if AlreadyConn = False then
     try
@@ -151,7 +151,7 @@ begin
         dbInfo := dbInfo + 'DriverName : ' + DataModule4.FDConnection1.DriverName + sLineBreak;
 
         //Verification for file existence :
-        if FileExists('F:\Delphi Apps\BdD\sqliktedb.db') = True then
+        if FileExists('F:\Delphi Apps\BdD\sqlitedb.db') = True then
           begin
             Params.Database := ('F:\Delphi Apps\BdD\sqlitedb.db');
             dbInfo := dbInfo + 'Database path : ' + DataModule4.FDConnection1.Params.Database + sLineBreak;
@@ -189,34 +189,7 @@ end;
 
 procedure TFoMain.btnSqliteDBTestClick(Sender: TObject);
 begin
-DBConStatus;
-//  if AlreadyConn = False then
-//    try
-//      AlreadyConn:= True;
-//      with DataModule4.FDConnection1 do
-//      begin
-//        labDbStatus.Text.Empty;
-//        LoginPrompt := False;
-//        dbInfo := dbInfo + 'Login prompt : ' + BoolToStr ( DataModule4.FDConnection1.LoginPrompt ) + sLineBreak;
-//
-//        DriverName := 'SQLite';
-//        dbInfo := dbInfo + 'DriverName : ' + DataModule4.FDConnection1.DriverName + sLineBreak;
-//
-//        Params.Database := ('F:\Delphi Apps\BdD\sqlitedb.db');
-//        dbInfo := dbInfo + 'Database path : ' + DataModule4.FDConnection1.Params.Database + sLineBreak;
-//
-//        Connected := True;
-//        dbInfo := dbInfo + 'Connected : ' + BoolToStr ( DataModule4.FDConnection1.Connected ) + sLineBreak;
-//
-//        labDbStatus.Text := dbInfo;
-//      end;
-//    Except
-//      TDialogService.ShowMessage('DB connection failed');
-//      AlreadyConn := False;
-//    end
-//
-//  else
-
+  DBConStatus
 end;
 
 procedure TFoMain.BtnFoShowClick(Sender: TObject);
