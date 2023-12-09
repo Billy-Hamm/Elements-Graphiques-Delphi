@@ -56,7 +56,7 @@ object FoMain: TFoMain
       Margins.Right = 10.000000000000000000
       Margins.Bottom = 10.000000000000000000
       Position.X = 10.000000000000000000
-      Position.Y = 10.000000000000000000
+      Position.Y = 140.000000000000000000
       Size.Width = 959.000000000000000000
       Size.Height = 41.000000000000000000
       Size.PlatformDefault = False
@@ -119,19 +119,19 @@ object FoMain: TFoMain
       end
     end
     object LayRectSelMain: TLayout
-      Align = Top
+      Align = MostTop
       Margins.Left = 10.000000000000000000
       Margins.Top = 10.000000000000000000
       Margins.Right = 10.000000000000000000
       Margins.Bottom = 10.000000000000000000
       Position.X = 10.000000000000000000
-      Position.Y = 71.000000000000000000
+      Position.Y = 10.000000000000000000
       Size.Width = 959.000000000000000000
-      Size.Height = 50.000000000000000000
+      Size.Height = 110.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 5
-      object Rectangle2: TRectangle
-        Align = Client
+      object RectMenu1: TRectangle
+        Align = Top
         Fill.Color = claWhite
         Size.Width = 959.000000000000000000
         Size.Height = 50.000000000000000000
@@ -152,7 +152,7 @@ object FoMain: TFoMain
             Margins.Top = 10.000000000000000000
             Margins.Right = 10.000000000000000000
             Margins.Bottom = 10.000000000000000000
-            Position.X = 210.000000000000000000
+            Position.X = 10.000000000000000000
             Position.Y = 10.000000000000000000
             Size.Width = 180.000000000000000000
             Size.Height = 30.000000000000000000
@@ -174,6 +174,13 @@ object FoMain: TFoMain
               Opacity = 0.500000000000000000
               ShadowColor = claBlack
             end
+            object FloatAnimation2: TFloatAnimation
+              Duration = 0.200000002980232200
+              OnFinish = FloatAnimation2Finish
+              PropertyName = 'Position.X'
+              StartValue = 0.000000000000000000
+              StopValue = 0.000000000000000000
+            end
           end
           object Label2: TLabel
             Align = Left
@@ -188,7 +195,7 @@ object FoMain: TFoMain
             TextSettings.HorzAlign = Center
             Text = 'Facture'
             TabOrder = 2
-            OnClick = Label6Click
+            OnClick = Label2Click
           end
           object Label3: TLabel
             Align = Right
@@ -204,14 +211,14 @@ object FoMain: TFoMain
             TextSettings.HorzAlign = Center
             Text = 'Dettes'
             TabOrder = 1
-            OnClick = Label7Click
+            OnClick = Label3Click
           end
           object Label4: TLabel
-            Align = Client
+            Align = Center
             Cursor = crHandPoint
             StyledSettings = [Style, FontColor]
             HitTest = True
-            Size.Width = 559.000000000000000000
+            Size.Width = 200.000000000000000000
             Size.Height = 50.000000000000000000
             Size.PlatformDefault = False
             TextSettings.Font.Family = 'Roboto'
@@ -219,7 +226,7 @@ object FoMain: TFoMain
             TextSettings.HorzAlign = Center
             Text = 'Menu'
             TabOrder = 0
-            OnClick = Label8Click
+            OnClick = Label4Click
           end
         end
         object ShadowEffect1: TShadowEffect
@@ -230,10 +237,92 @@ object FoMain: TFoMain
           ShadowColor = claBlack
         end
       end
+      object RectMenu2: TRectangle
+        Align = Bottom
+        Position.Y = 60.000000000000000000
+        Size.Width = 959.000000000000000000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
+        Stroke.Thickness = 0.000000000000000000
+        XRadius = 20.000000000000000000
+        YRadius = 20.000000000000000000
+        object Rectangle6: TRectangle
+          Fill.Color = claWhite
+          Margins.Left = 7.000000000000000000
+          Margins.Top = 10.000000000000000000
+          Margins.Right = 7.000000000000000000
+          Margins.Bottom = 10.000000000000000000
+          Position.X = 10.000000000000000000
+          Position.Y = 10.000000000000000000
+          Size.Width = 100.000000000000000000
+          Size.Height = 29.000000000000000000
+          Size.PlatformDefault = False
+          Stroke.Thickness = 0.000000000000000000
+          XRadius = 14.500000000000000000
+          YRadius = 14.500000000000000000
+          object FloatAnimation6: TFloatAnimation
+            Duration = 0.200000002980232200
+            OnFinish = FloatAnimation6Finish
+            PropertyName = 'Position.X'
+            StartValue = 0.000000000000000000
+            StopValue = 0.000000000000000000
+          end
+          object ShadowEffect4: TShadowEffect
+            Distance = 3.000000000000000000
+            Direction = 45.000000000000000000
+            Softness = 0.300000011920929000
+            Opacity = 0.600000023841857900
+            ShadowColor = claBlack
+          end
+        end
+        object Label6: TLabel
+          Align = MostRight
+          Cursor = crHandPoint
+          StyledSettings = [Style]
+          HitTest = True
+          Position.X = 839.000000000000000000
+          Size.Width = 120.000000000000000000
+          Size.Height = 50.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Roboto'
+          TextSettings.Font.Size = 16.000000000000000000
+          TextSettings.HorzAlign = Center
+          Text = 'Label6'
+          OnClick = Label6Click
+        end
+        object Label7: TLabel
+          Align = MostLeft
+          Cursor = crHandPoint
+          StyledSettings = [Style]
+          HitTest = True
+          Size.Width = 120.000000000000000000
+          Size.Height = 50.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Roboto'
+          TextSettings.Font.Size = 16.000000000000000000
+          TextSettings.HorzAlign = Center
+          Text = 'Label7'
+          OnClick = Label7Click
+        end
+        object Label8: TLabel
+          Align = Center
+          Cursor = crHandPoint
+          StyledSettings = [Style]
+          HitTest = True
+          Size.Width = 120.000000000000000000
+          Size.Height = 49.000000000000000000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Roboto'
+          TextSettings.Font.Size = 16.000000000000000000
+          TextSettings.HorzAlign = Center
+          Text = 'Label8'
+          OnClick = Label8Click
+        end
+      end
     end
     object layDB: TLayout
       Align = Top
-      Position.Y = 131.000000000000000000
+      Position.Y = 191.000000000000000000
       Size.Width = 979.000000000000000000
       Size.Height = 213.000000000000000000
       Size.PlatformDefault = False
@@ -260,8 +349,8 @@ object FoMain: TFoMain
       object OpenDialog1: TOpenDialog
         FileName = 'F:\Delphi Apps\BdD\mabase.db'
         Title = 'Sqlite Database'
-        Left = 184
-        Top = 136
+        Left = 416
+        Top = 280
       end
       object btnDataDisp: TButton
         Position.X = 20.000000000000000000
@@ -320,13 +409,6 @@ object FoMain: TFoMain
         Size.PlatformDefault = False
         Text = 'labLoop'
         TabOrder = 22
-      end
-      object btnGetParams: TButton
-        Position.X = 286.000000000000000000
-        Position.Y = 183.000000000000000000
-        TabOrder = 23
-        Text = 'Get Params'
-        OnClick = btnGetParamsClick
       end
     end
     object layRectSel2: TLayout
@@ -435,88 +517,6 @@ object FoMain: TFoMain
           Opacity = 0.500000000000000000
           ShadowColor = claBlack
           Enabled = False
-        end
-      end
-      object Rectangle5: TRectangle
-        Position.X = 256.000000000000000000
-        Position.Y = 73.000000000000000000
-        Size.Width = 414.000000000000000000
-        Size.Height = 49.000000000000000000
-        Size.PlatformDefault = False
-        Stroke.Thickness = 0.000000000000000000
-        XRadius = 20.000000000000000000
-        YRadius = 20.000000000000000000
-        object Rectangle6: TRectangle
-          Fill.Color = claWhite
-          Margins.Left = 7.000000000000000000
-          Margins.Top = 10.000000000000000000
-          Margins.Right = 7.000000000000000000
-          Margins.Bottom = 10.000000000000000000
-          Position.X = 10.000000000000000000
-          Position.Y = 10.000000000000000000
-          Size.Width = 100.000000000000000000
-          Size.Height = 29.000000000000000000
-          Size.PlatformDefault = False
-          Stroke.Thickness = 0.000000000000000000
-          XRadius = 14.500000000000000000
-          YRadius = 14.500000000000000000
-          object FloatAnimation6: TFloatAnimation
-            Duration = 0.200000002980232200
-            OnFinish = FloatAnimation6Finish
-            PropertyName = 'Position.X'
-            StartValue = 0.000000000000000000
-            StopValue = 0.000000000000000000
-          end
-          object ShadowEffect4: TShadowEffect
-            Distance = 3.000000000000000000
-            Direction = 45.000000000000000000
-            Softness = 0.300000011920929000
-            Opacity = 0.600000023841857900
-            ShadowColor = claBlack
-          end
-        end
-        object Label6: TLabel
-          Align = MostRight
-          Cursor = crHandPoint
-          StyledSettings = [Style]
-          HitTest = True
-          Position.X = 294.000000000000000000
-          Size.Width = 120.000000000000000000
-          Size.Height = 49.000000000000000000
-          Size.PlatformDefault = False
-          TextSettings.Font.Family = 'Roboto'
-          TextSettings.Font.Size = 16.000000000000000000
-          TextSettings.HorzAlign = Center
-          Text = 'Label6'
-          OnClick = Label6Click
-        end
-        object Label7: TLabel
-          Align = MostLeft
-          Cursor = crHandPoint
-          StyledSettings = [Style]
-          HitTest = True
-          Size.Width = 120.000000000000000000
-          Size.Height = 49.000000000000000000
-          Size.PlatformDefault = False
-          TextSettings.Font.Family = 'Roboto'
-          TextSettings.Font.Size = 16.000000000000000000
-          TextSettings.HorzAlign = Center
-          Text = 'Label7'
-          OnClick = Label7Click
-        end
-        object Label8: TLabel
-          Align = Center
-          Cursor = crHandPoint
-          StyledSettings = [Style]
-          HitTest = True
-          Size.Width = 120.000000000000000000
-          Size.Height = 49.000000000000000000
-          Size.PlatformDefault = False
-          TextSettings.Font.Family = 'Roboto'
-          TextSettings.Font.Size = 16.000000000000000000
-          TextSettings.HorzAlign = Center
-          Text = 'Label8'
-          OnClick = Label8Click
         end
       end
       inline Frame21: TFrBtnSw

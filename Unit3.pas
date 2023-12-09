@@ -46,6 +46,7 @@ type
     procedure Label2Click(Sender: TObject);
     procedure Label3Click(Sender: TObject);
   private
+    posDeb, posFin : Single;
     { Déclarations privées }
   public
     { Déclarations publiques }
@@ -54,7 +55,6 @@ type
 var
   Form3: TForm3;
   stopAni : Boolean;
-  posDeb, posFin : Single;
 
 implementation
 

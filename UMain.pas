@@ -22,7 +22,7 @@ type
     Rectangle1: TRectangle;
     Label1: TLabel;
     AniIndicator1: TAniIndicator;
-    Rectangle2: TRectangle;
+    RectMenu1: TRectangle;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
@@ -48,7 +48,7 @@ type
     Button4: TButton;
     BtnFctShow: TButton;
     btnDBTest: TButton;
-    Rectangle5: TRectangle;
+    RectMenu2: TRectangle;
     Rectangle6: TRectangle;
     FloatAnimation6: TFloatAnimation;
     Label6: TLabel;
@@ -69,7 +69,7 @@ type
     btnSqliteDBTest: TButton;
     btnSqliteDisp: TButton;
     labLoop: TLabel;
-    btnGetParams: TButton;
+    FloatAnimation2: TFloatAnimation;
 
 
 
@@ -82,8 +82,8 @@ type
     procedure Rectangle1Click(Sender: TObject);
     //procedure creationRectangleDeSelection(Sender: TObject);
     procedure Label6Click(Sender: TObject);
-    procedure Label8Click(Sender: TObject);
     procedure Label7Click(Sender: TObject);
+    procedure Label8Click(Sender: TObject);
     procedure Rectangle3Click(Sender: TObject);
     procedure BtnRectAnimClick(Sender: TObject);
     procedure Frame21Circle1Click(Sender: TObject);
@@ -92,7 +92,8 @@ type
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure BtnFctShowClick(Sender: TObject);
-    procedure FloatAnimation6Finish(Sender: TObject);
+//    procedure FloatAnimation6Finish(Sender: TObject);
+    procedure SliderAnimation( SliderFloatAnimation : TFloatanimation; RectangleSlider : TRectangle; Sender : Tcontrol);
 
 
     function PosElemClique(lab: TLabel): Single;
@@ -103,11 +104,22 @@ type
     procedure DataDisplay(Sender : TobJect);
     procedure btnSqliteDBTestClick(Sender: TObject);
     procedure btnSqliteDispClick(Sender: TObject);
-    procedure btnGetParamsClick(Sender: TObject);
+
     function DBConStatus(): Boolean;
+
+    procedure Label2Click(Sender: TObject);
+    procedure Label4Click(Sender: TObject);
+    procedure Label3Click(Sender: TObject);
+    procedure FloatAnimation2Finish(Sender: TObject);
+    procedure FloatAnimation6Finish(Sender: TObject);
+//    procedure FloatAnimation2Finish(Sender: TObject);
 
 
   private
+  
+  var
+
+  FloatAnim : TFloatAnimation;
     { Private declarations }
   public
   AlreadyConn, LoadSuccess : boolean;
@@ -121,10 +133,32 @@ var
   coorX : Single;
   elemClick : integer;
   dbInfo : string;
+  posDeb, posFin : single;
 
 implementation
 
 {$R *.fmx}
+
+
+procedure TFoMain.SliderAnimation(SliderFloatAnimation : TFloatanimation; RectangleSlider : TRectangle; Sender : Tcontrol);
+var
+ClickedElement : TControl;
+begin
+
+ClickedElement := Sender;
+  with SliderFloatAnimation do
+    begin
+      PropertyName := 'Position.X';
+
+      StartValue := posDeb;
+
+      StopValue :=   getElemPosX(ClickedElement) + 10;
+
+      posDeb := RectangleSlider.Position.X;
+
+      Start;
+    end;
+end;
 
 
 //cette partie la sert à restaurer le bouton à son état normal pour réésssayer
@@ -195,16 +229,6 @@ end;
 procedure TFoMain.BtnFoShowClick(Sender: TObject);
 begin
 form3.show;
-end;
-
-procedure TFoMain.btnGetParamsClick(Sender: TObject);
-var i : integer;
-begin
-//  for i  := 0 to Length( DataModule4.FDConnection1.Params) do
-//  begin
-    labDbStatus.Text := labDbStatus.Text + BoolToStr(btnGetParams.Enabled)
-//  end;
-
 end;
 
 procedure TFoMain.btnSqliteDispClick(Sender: TObject);
@@ -293,16 +317,12 @@ begin
   LoadSuccess := False;
   try
     DataModule4.ADOConnection1.ConnectionString := 'Provider=MSOLEDBSQL.1;Integrated Security=SSPI;Persist Security Info=False;User ID="";Initial Catalog=TestDB;Data Source=ASHEN-ACER\ASHEN;Initial File Name="";Trust Server Certificate=True;Server SPN="";Authentication="";Access Token="";';
-//    dbinfo := 'ConName : ' + DataModule4.ADOConnection1.ConnectionString + sLineBreak ;
 
     DataModule4.ADOConnection1.loginPrompt := False;
     dbInfo := dbInfo + 'Login prompt : ' + BoolToStr ( DataModule4.ADOConnection1.LoginPrompt ) + sLineBreak;
 
     DataModule4.ADOQuery1.Connection := DataModule4.ADOconnection1;
     dbinfo := dbinfo +  'Conn : ' + DataModule4.ADOQuery1.Connection.Name + sLineBreak ;
-
-//    DataModule4.SQLConnection1.DriverName := 'Sqlite';
-//    dbInfo := dbInfo + 'DriverName : ' + DataModule4.SQLConnection1.connectionName + sLineBreak;
 
     with DataModule4.ADOQuery1 do
     begin
@@ -315,40 +335,6 @@ begin
     Datamodule4.Datasource1.Dataset := Datamodule4.Adoquery1;
     dbInfo := dbInfo + 'DataSet : ' + Datamodule4.Datasource1.Dataset.Name + sLineBreak;
 
-
-//      try
-//        OpenDialog1.Filter := ('Sqlite Database|*.db|tous les fichiers|*.*');
-//        OpenDialog1.Execute;
-//        dbloc := OpenDialog1.FileName;
-//
-//        DataModule4.SQLConnection1.Params [0] := 'sqlite' ;
-//        DataModule4.SQLConnection1.Params [1] := dbLoc ;
-//
-//        dbInfo := dbInfo + 'dbLoc : ' + DataModule4.SQLConnection1.Params [1] + sLineBreak;
-//      except
-//        TDialogService.ShowMessage('Fichier invalide');
-//      end;
-
-//    DataModule4.SQLConnection1.connected := True;
-//    dbInfo := dbInfo + 'Connected : ' + BoolToStr ( DataModule4.SQLConnection1.Connected ) + sLineBreak;
-
-//      try
-//        DataModule4.SQLTable1.SQLConnection := DataModule4.SQLConnection1;
-//        TDialogService.ShowMessage('sql Conn');
-//
-//        DataModule4.SQLTable1.TableName := 'ENFANTS';
-//        TDialogService.ShowMessage('table name');
-//
-//        DataModule4.SQLTable1.Active := True;
-//        TDialogService.ShowMessage('activation');
-//
-//        TDialogService.ShowMessage('Table loaded');
-//
-//      except
-//        TDialogService.ShowMessage('file is not a database or is encrypted');
-//      end;
-
-//    TDialogService.ShowMessage('DB successfully connected.');
     labDbStatus.Text := dbinfo;
     loadsuccess := True;
   Except
@@ -362,7 +348,27 @@ begin
   restaurerBoutonConn(sender);
 end;
 
-//cette partie sert à capturer le clique sur la fenetre (13 = Entrée)
+//procedure TFoMain.FloatAnimation2Finish(Sender: TObject);
+//begin
+//  posFin := RectSel.Position.X;
+//  posDeb := posFin;
+//  FloatAnimation2.Stop;
+//end;
+
+//procedure TFoMain.FloatAnimation6Finish(Sender: TObject);
+//begin
+//  posFin := Rectangle6.Position.X;
+//  posDeb := posFin;
+//  FloatAnimation6.Stop;
+//end;
+
+procedure TFoMain.FloatAnimation2Finish(Sender: TObject);
+begin
+  posFin := RectSel.Position.X;
+  posDeb := posFin;
+  FloatAnimation2.Stop;
+end;
+
 procedure TFoMain.FloatAnimation6Finish(Sender: TObject);
 begin
   posFin := Rectangle6.Position.X;
@@ -405,65 +411,36 @@ begin
 end;
 
 
+procedure TFoMain.Label2Click(Sender: TObject);
+begin
+  SliderAnimation(FloatAnimation2, RectSel, Label2);
+end;
+
+procedure TFoMain.Label3Click(Sender: TObject);
+begin
+  SliderAnimation(FloatAnimation2 ,RectSel, Label3);
+end;
+
+procedure TFoMain.Label4Click(Sender: TObject);
+begin
+  SliderAnimation(FloatAnimation2, RectSel, Label4);
+end;
+
 procedure TFoMain.Label6Click(Sender: TObject);
 begin
-  with FloatAnimation6 do
-    begin
-      StartValue := posDeb;
-      StopValue :=   getElemPosX(Label6) + 10;
-      posDeb := Rectangle6.Position.X;
-      Start;
-    end;
+  SliderAnimation(FloatAnimation6,Rectangle6, Label6);
 end;
 
 procedure TFoMain.Label7Click(Sender: TObject);
 begin
-  with FloatAnimation6 do
-    begin
-      StartValue := posDeb;
-      StopValue := getElemPosX(Label7) + 10;
-      posDeb := Rectangle6.Position.X;
-      Start;
-    end;
+  SliderAnimation(FloatAnimation6,Rectangle6, Label7);
 end;
 
 procedure TFoMain.Label8Click(Sender: TObject);
 begin
-  with FloatAnimation6 do
-    begin
-      StartValue := posDeb;
-      StopValue := getElemPosX(Label8) + 10;
-      posDeb := Rectangle6.Position.X;
-      Start;
-    end;
+  SliderAnimation(FloatAnimation6,Rectangle6, Label8);
 end;
 
-
-
-(*procedure TForm1.creationRectangleDeSelection(Sender: TObject);
-begin
-  rectangleDeSelection := TRectangle.Create(Self);
-  with rectangleDeSelection do
-  begin
-    Parent := Layout1;
-    Align := TAlignLayout.Left;
-    Position.X := 0 ;
-    HitTest := False;
-    width := 200;
-    Opacity := 0.15;
-    Fill.Color := $FF878787;
-    Stroke.Thickness := 0;
-    XRadius := 25;
-    YRadius := 25;
-    with Margins do
-    begin
-      Left := 10;
-      Right := 10;
-      Top := 10;
-      Bottom := 10;
-    end;
-  end;
-end;*)
 
 procedure TFoMain.lancerAttente(Sender: TObject);
 begin
@@ -478,11 +455,9 @@ begin
 
 end;
 
-
 procedure TFoMain.Rectangle1Click(Sender: TObject);
 begin
   verificationIDs(sender);
-
 end;
 
 procedure TFoMain.Rectangle3Click(Sender: TObject);
