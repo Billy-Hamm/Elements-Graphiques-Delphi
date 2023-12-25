@@ -128,9 +128,6 @@ Coordinates=208,141,74,51
 [Label2]
 Coordinates=80,70,46,51
 
-[labLoop]
-Coordinates=320,211,54,51
-
 [layDB]
 Coordinates=243,441,43,33
 
@@ -180,7 +177,7 @@ Coordinates=893,375,130,33
 Coordinates=22,300,139,51
 
 []
-Coordinates=357,370,82,33
+Coordinates=320,211,54,51
 
 [RectMenu1]
 Coordinates=0,408,69,33

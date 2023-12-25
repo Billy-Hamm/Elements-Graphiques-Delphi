@@ -1,0 +1,23 @@
+object frDataDisplay: TfrDataDisplay
+  Left = 0
+  Top = 0
+  Caption = 'Form4'
+  ClientHeight = 70
+  ClientWidth = 440
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object Rectangle1: TRectangle
+    Align = Left
+    Margins.Left = 5.000000000000000000
+    Margins.Top = 5.000000000000000000
+    Margins.Right = 5.000000000000000000
+    Margins.Bottom = 5.000000000000000000
+    Position.X = 5.000000000000000000
+    Position.Y = 5.000000000000000000
+    Size.Width = 73.000000000000000000
+    Size.Height = 60.000000000000000000
+    Size.PlatformDefault = False
+  end
+end

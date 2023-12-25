@@ -8,7 +8,8 @@ uses
   Unit3 in 'Unit3.pas' {Form3},
   uMsgLicence in 'uMsgLicence.pas' {frMsgLicence: TFrame},
   uFcts in '..\Fcts\uFcts.pas' {foFcts},
-  DM1 in 'DM1.pas' {DataModule4: TDataModule};
+  DM1 in 'DM1.pas' {DataModule4: TDataModule},
+  UEmployeeDataDisplayFrame in 'UEmployeeDataDisplayFrame.pas' {frDataDisplay: TFrame};
 
 {$R *.res}
 

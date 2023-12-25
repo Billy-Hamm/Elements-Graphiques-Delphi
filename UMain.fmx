@@ -2,8 +2,8 @@ object FoMain: TFoMain
   Left = 0
   Top = 0
   Caption = 'Form1'
-  ClientHeight = 580
-  ClientWidth = 979
+  ClientHeight = 704
+  ClientWidth = 1200
   WindowState = wsMaximized
   FormFactor.Width = 1366
   FormFactor.Height = 736
@@ -13,27 +13,27 @@ object FoMain: TFoMain
   DesignerMasterStyle = 0
   object ScrollBoxMain: TScrollBox
     Align = Client
-    Size.Width = 979.000000000000000000
-    Size.Height = 580.000000000000000000
+    Size.Width = 1200.000000000000000000
+    Size.Height = 704.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 0
-    Viewport.Width = 979.000000000000000000
-    Viewport.Height = 580.000000000000000000
+    Viewport.Width = 1200.000000000000000000
+    Viewport.Height = 704.000000000000000000
     object LayLicenceMsg: TLayout
       Align = Bottom
-      Position.Y = 547.000000000000000000
-      Size.Width = 979.000000000000000000
+      Position.Y = 671.000000000000000000
+      Size.Width = 1200.000000000000000000
       Size.Height = 33.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 3
       inline frMsgLicence1: TfrMsgLicence
         Align = Client
         ClipChildren = True
-        Size.Width = 899.000000000000000000
+        Size.Width = 1120.000000000000000000
         Size.Height = 33.000000000000000000
         Size.PlatformDefault = False
         inherited rectMsgLicence: TRectangle
-          Size.Width = 899.000000000000000000
+          Size.Width = 1120.000000000000000000
           Size.Height = 33.000000000000000000
           inherited Label1: TLabel
             TextSettings.Font.StyleExt = {00070000000000000004000000}
@@ -57,7 +57,7 @@ object FoMain: TFoMain
       Margins.Bottom = 10.000000000000000000
       Position.X = 10.000000000000000000
       Position.Y = 140.000000000000000000
-      Size.Width = 959.000000000000000000
+      Size.Width = 1180.000000000000000000
       Size.Height = 41.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 4
@@ -126,14 +126,14 @@ object FoMain: TFoMain
       Margins.Bottom = 10.000000000000000000
       Position.X = 10.000000000000000000
       Position.Y = 10.000000000000000000
-      Size.Width = 959.000000000000000000
+      Size.Width = 1180.000000000000000000
       Size.Height = 110.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 5
       object RectMenu1: TRectangle
         Align = Top
         Fill.Color = claWhite
-        Size.Width = 959.000000000000000000
+        Size.Width = 1180.000000000000000000
         Size.Height = 50.000000000000000000
         Size.PlatformDefault = False
         Stroke.Thickness = 0.000000000000000000
@@ -141,7 +141,7 @@ object FoMain: TFoMain
         YRadius = 25.000000000000000000
         object LayRectSel: TLayout
           Align = Top
-          Size.Width = 959.000000000000000000
+          Size.Width = 1180.000000000000000000
           Size.Height = 50.000000000000000000
           Size.PlatformDefault = False
           TabOrder = 3
@@ -176,7 +176,6 @@ object FoMain: TFoMain
             end
             object FloatAnimation2: TFloatAnimation
               Duration = 0.200000002980232200
-              OnFinish = FloatAnimation2Finish
               PropertyName = 'Position.X'
               StartValue = 0.000000000000000000
               StopValue = 0.000000000000000000
@@ -202,7 +201,7 @@ object FoMain: TFoMain
             Cursor = crHandPoint
             StyledSettings = [Style, FontColor]
             HitTest = True
-            Position.X = 759.000000000000000000
+            Position.X = 980.000000000000000000
             Size.Width = 200.000000000000000000
             Size.Height = 50.000000000000000000
             Size.PlatformDefault = False
@@ -240,7 +239,7 @@ object FoMain: TFoMain
       object RectMenu2: TRectangle
         Align = Bottom
         Position.Y = 60.000000000000000000
-        Size.Width = 959.000000000000000000
+        Size.Width = 1180.000000000000000000
         Size.Height = 50.000000000000000000
         Size.PlatformDefault = False
         Stroke.Thickness = 0.000000000000000000
@@ -262,7 +261,6 @@ object FoMain: TFoMain
           YRadius = 14.500000000000000000
           object FloatAnimation6: TFloatAnimation
             Duration = 0.200000002980232200
-            OnFinish = FloatAnimation6Finish
             PropertyName = 'Position.X'
             StartValue = 0.000000000000000000
             StopValue = 0.000000000000000000
@@ -280,7 +278,7 @@ object FoMain: TFoMain
           Cursor = crHandPoint
           StyledSettings = [Style]
           HitTest = True
-          Position.X = 839.000000000000000000
+          Position.X = 1060.000000000000000000
           Size.Width = 120.000000000000000000
           Size.Height = 50.000000000000000000
           Size.PlatformDefault = False
@@ -323,14 +321,14 @@ object FoMain: TFoMain
     object layDB: TLayout
       Align = Top
       Position.Y = 191.000000000000000000
-      Size.Width = 979.000000000000000000
-      Size.Height = 213.000000000000000000
+      Size.Width = 1200.000000000000000000
+      Size.Height = 122.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 6
       object labDbStatus: TLabel
         Align = Fit
-        Size.Width = 191.000000000000000000
-        Size.Height = 213.000000000000000000
+        Size.Width = 109.399047851562500000
+        Size.Height = 122.000000000000000000
         Size.PlatformDefault = False
         TextSettings.VertAlign = Leading
         Text = 'labDbStatus'
@@ -338,7 +336,7 @@ object FoMain: TFoMain
       end
       object btnDBTest: TButton
         Position.X = 20.000000000000000000
-        Position.Y = 32.000000000000000000
+        Position.Y = 4.000000000000000000
         Size.Width = 110.000000000000000000
         Size.Height = 49.000000000000000000
         Size.PlatformDefault = False
@@ -349,12 +347,12 @@ object FoMain: TFoMain
       object OpenDialog1: TOpenDialog
         FileName = 'F:\Delphi Apps\BdD\mabase.db'
         Title = 'Sqlite Database'
-        Left = 416
-        Top = 280
+        Left = 296
+        Top = 200
       end
       object btnDataDisp: TButton
         Position.X = 20.000000000000000000
-        Position.Y = 89.000000000000000000
+        Position.Y = 61.000000000000000000
         Size.Width = 110.000000000000000000
         Size.Height = 22.000000000000000000
         Size.PlatformDefault = False
@@ -365,25 +363,25 @@ object FoMain: TFoMain
       object labDataId: TLabel
         Align = Right
         Margins.Right = 200.000000000000000000
-        Position.X = 479.000000000000000000
+        Position.X = 700.000000000000000000
         Size.Width = 150.000000000000000000
-        Size.Height = 213.000000000000000000
+        Size.Height = 122.000000000000000000
         Size.PlatformDefault = False
         Text = 'Sample Text'
         TabOrder = 18
       end
       object labDataNomCan: TLabel
         Align = Right
-        Position.X = 829.000000000000000000
+        Position.X = 1050.000000000000000000
         Size.Width = 150.000000000000000000
-        Size.Height = 213.000000000000000000
+        Size.Height = 122.000000000000000000
         Size.PlatformDefault = False
         Text = 'Sample Text'
         TabOrder = 17
       end
       object btnSqliteDBTest: TButton
-        Position.X = 20.000000000000000000
-        Position.Y = 119.000000000000000000
+        Position.X = 164.000000000000000000
+        Position.Y = 4.000000000000000000
         Size.Width = 110.000000000000000000
         Size.Height = 49.000000000000000000
         Size.PlatformDefault = False
@@ -392,8 +390,8 @@ object FoMain: TFoMain
         OnClick = btnSqliteDBTestClick
       end
       object btnSqliteDisp: TButton
-        Position.X = 20.000000000000000000
-        Position.Y = 176.000000000000000000
+        Position.X = 164.000000000000000000
+        Position.Y = 61.000000000000000000
         Size.Width = 110.000000000000000000
         Size.Height = 22.000000000000000000
         Size.PlatformDefault = False
@@ -401,21 +399,22 @@ object FoMain: TFoMain
         Text = 'Sqlite Data Display'
         OnClick = btnSqliteDispClick
       end
-      object labLoop: TLabel
-        Position.X = 176.000000000000000000
-        Position.Y = 64.000000000000000000
-        Size.Width = 224.000000000000000000
-        Size.Height = 185.000000000000000000
+      object labCount: TLabel
+        Enabled = False
+        Position.X = 100.000000000000000000
+        Position.Y = 91.000000000000000000
+        Size.Width = 110.000000000000000000
+        Size.Height = 17.000000000000000000
         Size.PlatformDefault = False
-        Text = 'labLoop'
-        TabOrder = 22
+        Text = 'labCount'
+        TabOrder = 5
       end
     end
     object layRectSel2: TLayout
       Align = Bottom
-      Position.Y = 344.000000000000000000
-      Size.Width = 979.000000000000000000
-      Size.Height = 203.000000000000000000
+      Position.Y = 521.000000000000000000
+      Size.Width = 1200.000000000000000000
+      Size.Height = 150.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 7
       object BtnRectAnim: TButton
@@ -444,7 +443,7 @@ object FoMain: TFoMain
       end
       object Label5: TLabel
         Position.X = 20.000000000000000000
-        Position.Y = 8.000000000000000000
+        Position.Y = 100.000000000000000000
         Size.Width = 120.000000000000000000
         Size.Height = 27.000000000000000000
         Size.PlatformDefault = False
@@ -520,18 +519,40 @@ object FoMain: TFoMain
         end
       end
       inline Frame21: TFrBtnSw
-        Position.X = -3.000000000000000000
+        Position.X = 10.000000000000000000
+        Position.Y = 50.000000000000000000
         Size.Width = 69.000000000000000000
         Size.Height = 30.000000000000000000
         Size.PlatformDefault = False
         inherited Rectangle1: TRectangle
+          Size.Width = 69.000000000000000000
           OnClick = Frame21Rectangle1Click
           inherited Layout1: TLayout
+            Size.Width = 59.000000000000000000
             inherited Circle1: TCircle
               OnClick = Frame21Circle1Click
             end
           end
         end
+      end
+    end
+    object layDataFrame: TLayout
+      Align = Right
+      Position.X = 130.000000000000000000
+      Position.Y = 313.000000000000000000
+      Size.Width = 1070.000000000000000000
+      Size.Height = 208.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 8
+      object Button1: TButton
+        Position.X = -120.000000000000000000
+        Position.Y = 92.000000000000000000
+        Size.Width = 110.000000000000000000
+        Size.Height = 22.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        Text = 'Frame Data Display'
+        OnClick = Button1Click
       end
     end
   end

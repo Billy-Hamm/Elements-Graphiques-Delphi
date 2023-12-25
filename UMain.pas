@@ -15,9 +15,10 @@ uses
   UBtnSw, DM1, System.Rtti, FMX.Grid.Style, Data.Bind.EngExt, Fmx.Bind.DBEngExt,
   Fmx.Bind.Grid, System.Bindings.Outputs, Fmx.Bind.Editors,
   Data.Bind.Components, Data.Bind.Grid, Data.Bind.DBScope, FMX.ScrollBox,
-  FMX.Grid;
+  FMX.Grid, UEmployeeDataDisplayFrame;
 
 type
+  arrayofFrame = array of TFrame;
   TFoMain = class(TForm)
     Rectangle1: TRectangle;
     Label1: TLabel;
@@ -68,10 +69,12 @@ type
     labDataNomCan: TLabel;
     btnSqliteDBTest: TButton;
     btnSqliteDisp: TButton;
-    labLoop: TLabel;
     FloatAnimation2: TFloatAnimation;
+    labCount: TLabel;
+    layDataFrame: TLayout;
+    Button1: TButton;
 
-
+    ////////////////////////////////////
 
     procedure lancerAttente(Sender: TObject);
     procedure restaurerBoutonConn(Sender: TObject);
@@ -92,7 +95,6 @@ type
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure BtnFctShowClick(Sender: TObject);
-//    procedure FloatAnimation6Finish(Sender: TObject);
     procedure SliderAnimation( SliderFloatAnimation : TFloatanimation; RectangleSlider : TRectangle; Sender : Tcontrol);
 
 
@@ -105,21 +107,32 @@ type
     procedure btnSqliteDBTestClick(Sender: TObject);
     procedure btnSqliteDispClick(Sender: TObject);
 
-    function DBConStatus(): Boolean;
-
+    procedure Button1Click(Sender: TObject);
     procedure Label2Click(Sender: TObject);
     procedure Label4Click(Sender: TObject);
     procedure Label3Click(Sender: TObject);
-    procedure FloatAnimation2Finish(Sender: TObject);
-    procedure FloatAnimation6Finish(Sender: TObject);
-//    procedure FloatAnimation2Finish(Sender: TObject);
+
+    function FrameCreate(Sender : TObject) : ArrayOfFrame;
+    function DBConStatus(): Boolean;
+    function databaseRecordCount () : Integer;
+
+
+
+
+//    procedure FloatAnimationFinish(floatAnim: TFloatAnimation; rectAnim: TRectangle);
+
+    //    procedure FloatAnimation2Finish(Sender: TObject);
+//    procedure FloatAnimation6Finish(Sender: TObject);
+
+
 
 
   private
-  
-  var
+//  procedure OnAnimFinish(Sender : TObject; floatAnim : TFloatAnimation; RectSlider : TRectangle);
+  procedure myFinishEvent(Sender : TObject; rectslider : Trectangle; floatAnim : TFloatAnimation );
 
-  FloatAnim : TFloatAnimation;
+//  FloatAnim : TFloatAnimation;
+  //myFinishEvent  : TNotifyEvent;
     { Private declarations }
   public
   AlreadyConn, LoadSuccess : boolean;
@@ -131,33 +144,119 @@ var
   FoMain: TFoMain;
   rectangleDeSelection : TRectangle;
   coorX : Single;
-  elemClick : integer;
+  elemClick, J : integer;
   dbInfo : string;
-  posDeb, posFin : single;
+  startPos, finalPos : single;
+  globalFloatAnimName : TFloatAnimation;
+
+  alreadyCreated : Boolean;
+  frDyn : ArrayofFrame;
+  Frame : TFrame;
+  layoutDyn : TLayout;
+  contentLabel : TLabel;
+  dbRecCount : integer;
 
 implementation
 
 {$R *.fmx}
 
 
+function TFoMain.FrameCreate(Sender: TObject): ArrayOfFrame;
+var
+
+x, i : integer;
+
+begin
+  if alreadyCreated = false then
+    begin
+
+        alreadyCreated := True;
+
+        SetLength(FrDyn, databaseRecordCount);
+
+        for x := 0 to databaseRecordCount - 1 do
+        begin
+          Frame := UEmployeeDataDisplayFrame.TfrDataDisplay.Create(layDataFrame);
+          with Frame do
+            begin
+              Name := Name + IntToStr(x);
+
+              Parent := layDataFrame;
+              Align := TAlignLayout.Top;
+
+              FrDyn[x] := Frame;
+            end;
+
+            {*dynamically create a layout to host the label and align to Top
+             because if you align them to Top without a layout they will  push
+             any element on the right or left in th frame*}
+
+            layoutDyn := Tlayout.Create(Frame);
+            with layoutDyn do
+            begin
+              Parent := Frame;
+              Align := TAlignLayout.Client;
+            end;
+
+
+              for i := 0 to 2 do
+              //how many fields to display
+              begin
+                contentLabel := Tlabel.Create(Frame);
+                with contentLabel do
+                begin
+                  Name := 'Lab' + IntToStr(i);
+                  Parent := layoutDyn;
+                  Align := TAlignLayout.top;
+//                  AutoSize := True;
+
+                  //get the data to display from the database
+                  Text := 'No Data Loaded Yet';
+                end;
+              end;
+
+        end;
+        Result := FrDyn;
+        alreadyCreated := False;
+    end
+else
+  Exit
+end;
+
+
+procedure TFoMain.myFinishEvent(Sender : TObject; rectslider: Trectangle;floatAnim : TFloatAnimation );
+  begin
+    finalPos := RectSlider.Position.X;
+    startPos := finalPos;
+    floatAnim.Stop
+  end;
+
 procedure TFoMain.SliderAnimation(SliderFloatAnimation : TFloatanimation; RectangleSlider : TRectangle; Sender : Tcontrol);
 var
-ClickedElement : TControl;
+  ClickedElement : TControl;
 begin
 
-ClickedElement := Sender;
-  with SliderFloatAnimation do
-    begin
-      PropertyName := 'Position.X';
+  ClickedElement := Sender;
+  //globalFloatAnimName := SliderFloatAnimation;
 
-      StartValue := posDeb;
+    with SliderFloatAnimation do
+      begin
 
-      StopValue :=   getElemPosX(ClickedElement) + 10;
+        PropertyName := 'Position.X';
 
-      posDeb := RectangleSlider.Position.X;
+        StartValue := startPos;
 
-      Start;
-    end;
+        StopValue :=   getElemPosX(ClickedElement) + 10;
+
+        startPos := RectangleSlider.Position.X;
+
+        OnFinish:=nil;
+
+        //OnFinish := myFinishEvent(Sender, RectangleSlider, SliderFloatAnimation);
+
+        Start;
+      end;
+
 end;
 
 
@@ -185,9 +284,9 @@ begin
         dbInfo := dbInfo + 'DriverName : ' + DataModule4.FDConnection1.DriverName + sLineBreak;
 
         //Verification for file existence :
-        if FileExists('F:\Delphi Apps\BdD\sqlitedb.db') = True then
+        if FileExists ('E:\Delphi Apps\BdD\sqlitedb.db') = True then
           begin
-            Params.Database := ('F:\Delphi Apps\BdD\sqlitedb.db');
+            Params.Database := ('E:\Delphi Apps\BdD\sqlitedb.db');
             dbInfo := dbInfo + 'Database path : ' + DataModule4.FDConnection1.Params.Database + sLineBreak;
           end
         else
@@ -232,15 +331,19 @@ form3.show;
 end;
 
 procedure TFoMain.btnSqliteDispClick(Sender: TObject);
+var
+I : integer;
 begin
     if DBConStatus = True then
       begin
+        I := 1;
         with DataModule4.FDQuery1 do
         begin
 
           Connection := DataModule4.FDConnection1;
 
-          SQL.text := ('Select * From ets');
+          SQL.Text.Empty;
+          SQL.text := ('SELECT * FROM ets');
 
           Active := True;
 
@@ -252,9 +355,10 @@ begin
 //Display the data
       while not DataModule4.FDQuery1.Eof do
         begin
-
           labDataId.Text := labDataId.Text + DataModule4.FDQuery1.FieldByName('id_ets').AsString + sLineBreak;
           labDataNomCan.text := labDataNomCan.text + DataModule4.FDQuery1.FieldByName('nom_ets').AsString + sLineBreak;
+
+          I := I + 1;
 
           DataModule4.FDQuery1.Next;
         end;
@@ -262,6 +366,12 @@ begin
     else
     TDialogService.ShowMessage('DataBase Connection failed')
 
+end;
+
+procedure TFoMain.Button1Click(Sender: TObject);
+begin
+  databaseRecordCount;
+  FrameCreate(Sender);
 end;
 
 procedure TFoMain.Button3Click(Sender: TObject);
@@ -273,6 +383,19 @@ procedure TFoMain.Button4Click(Sender: TObject);
 begin
 frMsgLicence1.animMsgLicence.StopValue := frMsgLicence1.rectMsgLicence.width;
 frMsgLicence1.animMsgLicence.start;
+end;
+
+function TFoMain.databaseRecordCount: Integer;
+begin
+  DBConStatus;
+
+    with DataModule4.FDQuery1 do
+      begin
+        Connection := DataModule4.FDConnection1;
+        SQL.Text := ('SELECT * FROM ets');
+        Active := true;
+      end;
+      Result := DataModule4.FDQuery1.RecordCount;
 end;
 
 procedure TFoMain.BtnFctShowClick(Sender: TObject);
@@ -297,6 +420,8 @@ begin
   end;
 end;
 
+
+
 procedure TFoMain.btnDataDispClick(Sender: TObject);
 begin
   if LoadSuccess = False then
@@ -316,7 +441,7 @@ var
 begin
   LoadSuccess := False;
   try
-    DataModule4.ADOConnection1.ConnectionString := 'Provider=MSOLEDBSQL.1;Integrated Security=SSPI;Persist Security Info=False;User ID="";Initial Catalog=TestDB;Data Source=ASHEN-ACER\ASHEN;Initial File Name="";Trust Server Certificate=True;Server SPN="";Authentication="";Access Token="";';
+    DataModule4.ADOConnection1.ConnectionString := 'Provider=MSOLEDBSQL.1;Integrated Security=SSPI;Persist Security Info=False;User ID="";Initial Catalog="";Data Source=DESKTOP-6F8DECJ\ASHEN;Initial File Name="";Trust Server Certificate=True;Server SPN="";Authentication="";Access Token=""';
 
     DataModule4.ADOConnection1.loginPrompt := False;
     dbInfo := dbInfo + 'Login prompt : ' + BoolToStr ( DataModule4.ADOConnection1.LoginPrompt ) + sLineBreak;
@@ -362,18 +487,12 @@ end;
 //  FloatAnimation6.Stop;
 //end;
 
-procedure TFoMain.FloatAnimation2Finish(Sender: TObject);
-begin
-  posFin := RectSel.Position.X;
-  posDeb := posFin;
-  FloatAnimation2.Stop;
-end;
 
-procedure TFoMain.FloatAnimation6Finish(Sender: TObject);
+procedure FloatAnimationFinish(floatAnim: TFloatAnimation; rectAnim: TRectangle);
 begin
-  posFin := Rectangle6.Position.X;
-  posDeb := posFin;
-  FloatAnimation6.Stop;
+  finalPos := rectAnim.Position.X;
+  startPos := finalPos;
+  floatAnim.Stop
 end;
 
 procedure TFoMain.FormCreate(Sender: TObject);
@@ -410,7 +529,7 @@ begin
   Result := coorX
 end;
 
-
+//
 procedure TFoMain.Label2Click(Sender: TObject);
 begin
   SliderAnimation(FloatAnimation2, RectSel, Label2);
@@ -425,7 +544,9 @@ procedure TFoMain.Label4Click(Sender: TObject);
 begin
   SliderAnimation(FloatAnimation2, RectSel, Label4);
 end;
+//
 
+//
 procedure TFoMain.Label6Click(Sender: TObject);
 begin
   SliderAnimation(FloatAnimation6,Rectangle6, Label6);
@@ -440,7 +561,7 @@ procedure TFoMain.Label8Click(Sender: TObject);
 begin
   SliderAnimation(FloatAnimation6,Rectangle6, Label8);
 end;
-
+//
 
 procedure TFoMain.lancerAttente(Sender: TObject);
 begin
@@ -466,7 +587,6 @@ begin
   FloatAnimationHeight.Enabled := False;
   if FloatAnimationWidth.Enabled = False then
   begin
-    //FMX.DialogService.TDialogService.ShowMessage(' ');
     //activer l'animation la premiere fois
     with FloatAnimationHeight do
       begin
@@ -480,21 +600,6 @@ begin
         AutoReverse:= True;
       end
   end
-    (*begin
-      //FMX.DialogService.TDialogService.ShowMessage(' ');
-      with FloatAnimationHeight do
-         begin
-          Enabled := False;
-          Enabled := True;
-          AutoReverse:= True;
-         end;
-      with FloatAnimationWidth do
-         begin
-          Enabled := False;
-          Enabled := True;
-          AutoReverse:= True;
-         end;
-    end;*)
 end;
 
 procedure TFoMain.restaurerBoutonConn(Sender: TObject);

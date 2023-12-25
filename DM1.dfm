@@ -1,16 +1,17 @@
 object DataModule4: TDataModule4
-  Height = 386
-  Width = 668
+  Height = 579
+  Width = 1002
+  PixelsPerInch = 144
   object ADOConnection1: TADOConnection
     ConnectionString = 
       'Provider=MSOLEDBSQL.1;Integrated Security=SSPI;Persist Security ' +
-      'Info=False;User ID="";Initial Catalog=TestDB;Data Source=ASHEN-A' +
-      'CER\ASHEN;Initial File Name="";Trust Server Certificate=True;Ser' +
-      'ver SPN="";Authentication="";Access Token="";'
+      'Info=False;User ID="";Initial Catalog="";Data Source=DESKTOP-6F8' +
+      'DECJ\ASHEN;Initial File Name="";Trust Server Certificate=True;Se' +
+      'rver SPN="";Authentication="";Access Token=""'
     LoginPrompt = False
     Provider = 'MSOLEDBSQL.1'
-    Left = 40
-    Top = 16
+    Left = 60
+    Top = 24
   end
   object ADOQuery1: TADOQuery
     ConnectionString = 
@@ -19,21 +20,21 @@ object DataModule4: TDataModule4
       'CER\ASHEN;Initial File Name="";Trust Server Certificate=True;Ser' +
       'ver SPN="";Authentication="";Access Token="";'
     Parameters = <>
-    Left = 144
-    Top = 16
+    Left = 216
+    Top = 24
   end
   object DataSource1: TDataSource
-    Left = 264
-    Top = 16
+    Left = 396
+    Top = 24
   end
   object DataSource2: TDataSource
-    Left = 264
-    Top = 112
+    Left = 396
+    Top = 168
   end
   object SQLQuery1: TSQLQuery
     Params = <>
-    Left = 152
-    Top = 112
+    Left = 228
+    Top = 168
   end
   object SQLConnection1: TSQLConnection
     ConnectionName = 'SQLITECONNECTION'
@@ -42,16 +43,16 @@ object DataModule4: TDataModule4
     Params.Strings = (
       'DriverName=Sqlite'
       'Database=test.db')
-    Left = 40
-    Top = 112
+    Left = 60
+    Top = 168
   end
   object FDConnection1: TFDConnection
-    Left = 40
-    Top = 200
+    Left = 72
+    Top = 324
   end
   object FDQuery1: TFDQuery
     Connection = FDConnection1
-    Left = 152
-    Top = 200
+    Left = 228
+    Top = 300
   end
 end
