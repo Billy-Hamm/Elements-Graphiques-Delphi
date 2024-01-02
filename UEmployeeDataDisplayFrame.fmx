@@ -1,5 +1,5 @@
 object frDataDisplay: TfrDataDisplay
-  Size.Width = 478.000000000000000000
+  Size.Width = 280.000000000000000000
   Size.Height = 66.000000000000000000
   Size.PlatformDefault = False
   object Rectangle1: TRectangle

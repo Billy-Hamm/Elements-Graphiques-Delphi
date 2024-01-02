@@ -544,7 +544,7 @@ object FoMain: TFoMain
       Size.Height = 208.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 8
-      object Button1: TButton
+      object BtnDisplayData: TButton
         Position.X = -120.000000000000000000
         Position.Y = 92.000000000000000000
         Size.Width = 110.000000000000000000
@@ -552,7 +552,24 @@ object FoMain: TFoMain
         Size.PlatformDefault = False
         TabOrder = 0
         Text = 'Frame Data Display'
+        OnClick = BtnDisplayDataClick
+      end
+      object Button1: TButton
+        Position.X = -110.000000000000000000
+        Position.Y = 56.000000000000000000
+        TabOrder = 1
+        Text = 'Button1'
         OnClick = Button1Click
+      end
+      object FlowLayout1: TFlowLayout
+        Align = Client
+        Size.Width = 1070.000000000000000000
+        Size.Height = 208.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 2
+        Justify = Left
+        JustifyLastLine = Left
+        FlowDirection = LeftToRight
       end
     end
   end

@@ -18,7 +18,14 @@ uses
   FMX.Grid, UEmployeeDataDisplayFrame;
 
 type
+
+  //////////////////////////////////////////////////////////
+                          {custom types}
   arrayofFrame = array of TFrame;
+  arrayOfDBCount = array [0..1] of Integer;
+  arrayOfArrayOfString = array of array of string;
+                          {custom types}
+  //////////////////////////////////////////////////////////
   TFoMain = class(TForm)
     Rectangle1: TRectangle;
     Label1: TLabel;
@@ -72,13 +79,18 @@ type
     FloatAnimation2: TFloatAnimation;
     labCount: TLabel;
     layDataFrame: TLayout;
+    BtnDisplayData: TButton;
     Button1: TButton;
+    FlowLayout1: TFlowLayout;
 
     ////////////////////////////////////
 
     procedure lancerAttente(Sender: TObject);
     procedure restaurerBoutonConn(Sender: TObject);
     procedure verificationIDs(Sender: TObject);
+
+    ////////////////////////////////////
+
     procedure Edit1Change(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; var KeyChar: Char;
       Shift: TShiftState);
@@ -97,9 +109,6 @@ type
     procedure BtnFctShowClick(Sender: TObject);
     procedure SliderAnimation( SliderFloatAnimation : TFloatanimation; RectangleSlider : TRectangle; Sender : Tcontrol);
 
-
-    function PosElemClique(lab: TLabel): Single;
-    function getElemPosX(ElemClick : TControl) : single;
     procedure btnDBTestClick(Sender: TObject);
     procedure btnDataDispClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -107,24 +116,24 @@ type
     procedure btnSqliteDBTestClick(Sender: TObject);
     procedure btnSqliteDispClick(Sender: TObject);
 
-    procedure Button1Click(Sender: TObject);
+    procedure BtnDisplayDataClick(Sender: TObject);
     procedure Label2Click(Sender: TObject);
     procedure Label4Click(Sender: TObject);
     procedure Label3Click(Sender: TObject);
 
+                  {custom functions}
+    function PosElemClique(lab: TLabel): Single;
+    function getElemPosX(ElemClick : TControl) : single;
+
     function FrameCreate(Sender : TObject) : ArrayOfFrame;
     function DBConStatus(): Boolean;
-    function databaseRecordCount () : Integer;
+    function databaseRecordAndFieldCount () : arrayOfDBCount;
 
+    function GetData (FDCOnn : TFDConnection;
+    FDQuery : TFDQuery; FieldName : string ) : TArray<string>;
+                  {custom functions}
 
-
-
-//    procedure FloatAnimationFinish(floatAnim: TFloatAnimation; rectAnim: TRectangle);
-
-    //    procedure FloatAnimation2Finish(Sender: TObject);
-//    procedure FloatAnimation6Finish(Sender: TObject);
-
-
+    procedure Button1Click(Sender: TObject);
 
 
   private
@@ -156,6 +165,8 @@ var
   contentLabel : TLabel;
   dbRecCount : integer;
 
+  labDataArray : array of Tlabel;
+
 implementation
 
 {$R *.fmx}
@@ -164,65 +175,124 @@ implementation
 function TFoMain.FrameCreate(Sender: TObject): ArrayOfFrame;
 var
 
-x, i : integer;
+X, I, L, D: integer;
+ArrayOfLayouts : array of Tlayout;
 
 begin
-  if alreadyCreated = false then
+
+  if alreadyCreated = False then
+
     begin
 
-        alreadyCreated := True;
+      alreadyCreated := True;
 
-        SetLength(FrDyn, databaseRecordCount);
+      SetLength(FrDyn, databaseRecordAndFieldCount[0]);
 
-        for x := 0 to databaseRecordCount - 1 do
+      for X := 0 to databaseRecordAndFieldCount [0] - 1 do
+      begin
+        Frame := UEmployeeDataDisplayFrame.TfrDataDisplay.Create(layDataFrame);
+        with Frame do
         begin
-          Frame := UEmployeeDataDisplayFrame.TfrDataDisplay.Create(layDataFrame);
-          with Frame do
-            begin
-              Name := Name + IntToStr(x);
+          Name := Name + IntToStr(x);
 
-              Parent := layDataFrame;
-              Align := TAlignLayout.Top;
+          Parent := FlowLayout1;
 
-              FrDyn[x] := Frame;
-            end;
+          {* this is to align them in ascending order, because without
+          that we get Frame 1 on top , then the last frame, then the frame
+          before it and so on for some reason *}
 
-            {*dynamically create a layout to host the label and align to Top
-             because if you align them to Top without a layout they will  push
-             any element on the right or left in th frame*}
+          Align := TAlignLayout.Top;
+          Align := TAlignLayout.Bottom;
+          Align := TAlignLayout.Top;
 
-            layoutDyn := Tlayout.Create(Frame);
-            with layoutDyn do
-            begin
-              Parent := Frame;
-              Align := TAlignLayout.Client;
-            end;
-
-
-              for i := 0 to 2 do
-              //how many fields to display
-              begin
-                contentLabel := Tlabel.Create(Frame);
-                with contentLabel do
-                begin
-                  Name := 'Lab' + IntToStr(i);
-                  Parent := layoutDyn;
-                  Align := TAlignLayout.top;
-//                  AutoSize := True;
-
-                  //get the data to display from the database
-                  Text := 'No Data Loaded Yet';
-                end;
-              end;
-
+          FrDyn[X] := Frame;
         end;
-        Result := FrDyn;
-        alreadyCreated := False;
+
+        {*dynamically create a layout to host the label and align to Top
+        because if you align them to Top without a layout they will  push
+        any element on the right or left in th frame*}
+        SetLength(ArrayOfLayouts, (databaseRecordAndFieldCount [0] - 1) );
+
+        layoutDyn := Tlayout.Create(Frame);
+        with layoutDyn do
+        begin
+          Parent := Frame;
+          Name := 'LayoutDyn' + IntToStr(X);
+          Align := TAlignLayout.Client;
+          Arrayoflayouts[X] := layoutdyn
+        end;
+      end;
+      Result := FrDyn;
+      alreadyCreated := False;
+
+
+      SetLength(labDataArray, (databaseRecordAndFieldCount[0]*3) - 1);
+      for I := 0 to Length(labDataArray) do
+      //how many fields to display dipending on how many fields there in the DB
+      begin
+        contentLabel := Tlabel.Create(Frame);
+        with contentLabel do
+        begin
+                Name := 'Lab' + IntToStr(i);
+                for L := 0 to 2 do
+                begin
+                  Parent := layoutDyn;
+
+                  Align := TAlignLayout.Top;
+                  Align := TAlignLayout.Bottom;
+                  Align := TAlignLayout.Top;
+
+                  Text := 'test';
+                end;
+
+//                  AutoSize := True;
+                labDataArray[I] := contentLabel;
+        end;
+      end;
+
+            for I := 0 to 2 do
+
+        begin
+              labDataArray[I].Text :=
+              labDataArray[I].Text + Getdata(Datamodule4.FDConnection1, Datamodule4.FDQuery1, 'id_ets')[I]
+              + ', ' + GetData(Datamodule4.FDConnection1, Datamodule4.FDQuery1, 'nom_ets')[I]
+              + ', ' + GetData(Datamodule4.FDConnection1, Datamodule4.FDQuery1, 'num_ets')[I];
+        end;
     end
 else
   Exit
 end;
 
+
+function TFoMain.GetData({DataModule : TDataModule;} FDConn: TFDConnection;
+FDQuery : TFDQuery; FieldName : string): TArray<string>;
+var
+  ArrayOfID : TArray<string>;
+  I, J : integer;
+begin
+  SetLength(ArrayOfId, databaseRecordAndFieldCount[0]);
+  with FDQuery do
+        begin
+
+          Connection := DataModule4.FDConnection1;
+
+          SQL.Text.Empty;
+          SQL.text := ('SELECT * FROM ets');
+
+          Active := True;
+
+        end;
+
+
+  for I := 0 to databaseRecordAndFieldCount[0] - 1 do
+    begin
+      ArrayOfID[I] := FDQuery.FieldByName(FieldName).AsString;
+
+      FDQuery.Next;
+    end;
+    FDQuery.Close;
+  Result := ArrayOfId;
+end;
 
 procedure TFoMain.myFinishEvent(Sender : TObject; rectslider: Trectangle;floatAnim : TFloatAnimation );
   begin
@@ -261,6 +331,7 @@ end;
 
 
 //cette partie la sert à restaurer le bouton à son état normal pour réésssayer
+
 procedure TFoMain.BtnRectAnimClick(Sender: TObject);
 begin
   FloatAnimation1.Enabled := true;
@@ -333,6 +404,7 @@ end;
 procedure TFoMain.btnSqliteDispClick(Sender: TObject);
 var
 I : integer;
+arrayOfField1, arrayOfField2, arrayOfField3 : array of string;
 begin
     if DBConStatus = True then
       begin
@@ -368,10 +440,16 @@ begin
 
 end;
 
+procedure TFoMain.BtnDisplayDataClick(Sender: TObject);
+begin
+  DBConStatus;
+  databaseRecordAndFieldCount;
+  FrameCreate(Sender);
+end;
+
 procedure TFoMain.Button1Click(Sender: TObject);
 begin
-  databaseRecordCount;
-  FrameCreate(Sender);
+  GetData(Datamodule4.FDConnection1, Datamodule4.FDQuery1, 'id_ets')
 end;
 
 procedure TFoMain.Button3Click(Sender: TObject);
@@ -385,22 +463,26 @@ frMsgLicence1.animMsgLicence.StopValue := frMsgLicence1.rectMsgLicence.width;
 frMsgLicence1.animMsgLicence.start;
 end;
 
-function TFoMain.databaseRecordCount: Integer;
+
+function TFoMain.databaseRecordAndFieldCount  : arrayOfDBCount;
+var
+fieldCount, recordCount : integer;
+
 begin
   DBConStatus;
-
     with DataModule4.FDQuery1 do
       begin
         Connection := DataModule4.FDConnection1;
         SQL.Text := ('SELECT * FROM ets');
         Active := true;
       end;
-      Result := DataModule4.FDQuery1.RecordCount;
+      Result [0] := DataModule4.FDQuery1.RecordCount;
+      Result [1] := DataModule4.FDQuery1.FieldCount;
 end;
 
 procedure TFoMain.BtnFctShowClick(Sender: TObject);
 begin
-Fofcts.show;
+  Fofcts.show;
 end;
 
 procedure TFoMain.DataDisplay(Sender: TObject);
