@@ -22,6 +22,9 @@ type
   //////////////////////////////////////////////////////////
                           {custom types}
   arrayofFrame = array of TFrame;
+  arrayOfLayout = array of TLayout;
+  arrayOfLabel = array of TLabel;
+
   arrayOfDBCount = array [0..1] of Integer;
   arrayOfArrayOfString = array of array of string;
                           {custom types}
@@ -82,6 +85,7 @@ type
     BtnDisplayData: TButton;
     Button1: TButton;
     FlowLayout1: TFlowLayout;
+    Button2: TButton;
 
     ////////////////////////////////////
 
@@ -125,7 +129,10 @@ type
     function PosElemClique(lab: TLabel): Single;
     function getElemPosX(ElemClick : TControl) : single;
 
-    function FrameCreate(Sender : TObject) : ArrayOfFrame;
+    function FrameCreate() : ArrayOfFrame;
+    function LayoutCreate () : ArrayOfLayout;
+    function LabelCreate () : ArrayOfLabel;
+
     function DBConStatus(): Boolean;
     function databaseRecordAndFieldCount () : arrayOfDBCount;
 
@@ -134,6 +141,7 @@ type
                   {custom functions}
 
     procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
 
 
   private
@@ -172,18 +180,14 @@ implementation
 {$R *.fmx}
 
 
-function TFoMain.FrameCreate(Sender: TObject): ArrayOfFrame;
+function TFoMain.FrameCreate(): ArrayOfFrame;
 var
 
-X, I, L, D: integer;
-ArrayOfLayouts : array of Tlayout;
+X : integer;
 
 begin
-
   if alreadyCreated = False then
-
     begin
-
       alreadyCreated := True;
 
       SetLength(FrDyn, databaseRecordAndFieldCount[0]);
@@ -211,60 +215,83 @@ begin
         {*dynamically create a layout to host the label and align to Top
         because if you align them to Top without a layout they will  push
         any element on the right or left in th frame*}
-        SetLength(ArrayOfLayouts, (databaseRecordAndFieldCount [0] - 1) );
-
-        layoutDyn := Tlayout.Create(Frame);
-        with layoutDyn do
-        begin
-          Parent := Frame;
-          Name := 'LayoutDyn' + IntToStr(X);
-          Align := TAlignLayout.Client;
-          Arrayoflayouts[X] := layoutdyn
-        end;
       end;
       Result := FrDyn;
       alreadyCreated := False;
+    end;
+end;
 
+function TFoMain.LabelCreate : ArrayOfLabel;
+var
+ArrayOfLabels : ArrayOfLabel;
+ArrayOfResultLayouts : ArrayOfLayout;
+I, X, IntStart, IntFinal, IntLab : Integer;
 
-      SetLength(labDataArray, (databaseRecordAndFieldCount[0]*3) - 1);
-      for I := 0 to Length(labDataArray) do
-      //how many fields to display dipending on how many fields there in the DB
+begin
+  ArrayOfResultLayouts := LayoutCreate;
+
+  SetLength(ArrayOfLabels, (databaseRecordAndFieldCount[0]*3) - 1);
+  for I := 0 to Length(ArrayOfLabels) do
+  begin
+    contentlabel := Tlabel.Create(Frame);
+    with contentLabel do
+    begin
+      Name := 'LabDyn' + IntToStr(I);
+      Align := TAlignLayout.Top;
+
+      Text := 'test' + IntToStr(I);
+
+      Arrayoflabels[I] := contentLabel;
+    end;
+  end;
+  Result := ArrayOfLabels;
+
+  X := 0;
+  IntStart := 0;
+  IntFinal := 2;
+
+  for J := 0 to Length(ArrayOfLabels) do
+  begin
+    for IntLab := IntStart to IntFinal do
+    ArrayOfLabels[IntLab].Parent := ArrayOfResultLayouts[X];
+
+    if X < (Length(ArrayOfResultLayouts)) then
       begin
-        contentLabel := Tlabel.Create(Frame);
-        with contentLabel do
-        begin
-                Name := 'Lab' + IntToStr(i);
-                for L := 0 to 2 do
-                begin
-                  Parent := layoutDyn;
+        IntStart := IntStart + 2;
+        IntFinal := IntFinal + 2;
+        X := X + 1;
+      end
 
-                  Align := TAlignLayout.Top;
-                  Align := TAlignLayout.Bottom;
-                  Align := TAlignLayout.Top;
+      else
+        break
 
-                  Text := 'test';
-                end;
-
-//                  AutoSize := True;
-                labDataArray[I] := contentLabel;
-        end;
-      end;
-
-            for I := 0 to 2 do
-
-        begin
-              labDataArray[I].Text :=
-              labDataArray[I].Text + Getdata(Datamodule4.FDConnection1, Datamodule4.FDQuery1, 'id_ets')[I]
-              + ', ' + GetData(Datamodule4.FDConnection1, Datamodule4.FDQuery1, 'nom_ets')[I]
-              + ', ' + GetData(Datamodule4.FDConnection1, Datamodule4.FDQuery1, 'num_ets')[I];
-        end;
-    end
-else
-  Exit
+  end;
 end;
 
 
-function TFoMain.GetData({DataModule : TDataModule;} FDConn: TFDConnection;
+function TFoMain.LayoutCreate (): ArrayOfLayout;
+var
+ArrayOfLayouts : ArrayOfLayout;
+I : Integer;
+
+begin
+  SetLength(ArrayOfLayouts, (databaseRecordAndFieldCount [0] - 1) );
+  for I := 0 to databaseRecordAndFieldCount[0] - 1 do
+  begin
+    layoutDyn := Tlayout.Create(Frame);
+    with layoutDyn do
+    begin
+      Parent := Frame;
+      Name := 'LayoutDyn' + IntToStr(I);
+      Align := TAlignLayout.Client;
+      Arrayoflayouts[I] := layoutdyn;
+    end;
+  end;
+Result := ArrayOfLayouts;
+end;
+
+
+function TFoMain.GetData( FDConn: TFDConnection;
 FDQuery : TFDQuery; FieldName : string): TArray<string>;
 var
   ArrayOfID : TArray<string>;
@@ -443,13 +470,28 @@ end;
 procedure TFoMain.BtnDisplayDataClick(Sender: TObject);
 begin
   DBConStatus;
+
   databaseRecordAndFieldCount;
-  FrameCreate(Sender);
+    FrameCreate();
+        LabelCreate();
 end;
 
 procedure TFoMain.Button1Click(Sender: TObject);
+var
+
+I : integer;
+
 begin
-  GetData(Datamodule4.FDConnection1, Datamodule4.FDQuery1, 'id_ets')
+//  GetData(Datamodule4.FDConnection1, Datamodule4.FDQuery1, 'id_ets')
+//for I := 0 to ((databaseRecordAndFieldCount[0] * 3) - 1) do
+//  labCount.Text := labCount.Text + LayoutCreate[I].name + sLineBreak;
+LabelCreate;
+
+end;
+
+procedure TFoMain.Button2Click(Sender: TObject);
+begin
+  labDbStatus.Text := GetCurrentDir;
 end;
 
 procedure TFoMain.Button3Click(Sender: TObject);
@@ -643,7 +685,7 @@ procedure TFoMain.Label8Click(Sender: TObject);
 begin
   SliderAnimation(FloatAnimation6,Rectangle6, Label8);
 end;
-//
+
 
 procedure TFoMain.lancerAttente(Sender: TObject);
 begin

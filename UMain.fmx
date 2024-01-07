@@ -332,7 +332,7 @@ object FoMain: TFoMain
         Size.PlatformDefault = False
         TextSettings.VertAlign = Leading
         Text = 'labDbStatus'
-        TabOrder = 20
+        TabOrder = 19
       end
       object btnDBTest: TButton
         Position.X = 20.000000000000000000
@@ -340,7 +340,7 @@ object FoMain: TFoMain
         Size.Width = 110.000000000000000000
         Size.Height = 49.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 8
+        TabOrder = 7
         Text = 'TSQL DB Test'
         OnClick = btnDBTestClick
       end
@@ -356,7 +356,7 @@ object FoMain: TFoMain
         Size.Width = 110.000000000000000000
         Size.Height = 22.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 21
+        TabOrder = 20
         Text = 'TSQL Data Display'
         OnClick = btnDataDispClick
       end
@@ -368,7 +368,7 @@ object FoMain: TFoMain
         Size.Height = 122.000000000000000000
         Size.PlatformDefault = False
         Text = 'Sample Text'
-        TabOrder = 18
+        TabOrder = 17
       end
       object labDataNomCan: TLabel
         Align = Right
@@ -377,7 +377,7 @@ object FoMain: TFoMain
         Size.Height = 122.000000000000000000
         Size.PlatformDefault = False
         Text = 'Sample Text'
-        TabOrder = 17
+        TabOrder = 16
       end
       object btnSqliteDBTest: TButton
         Position.X = 164.000000000000000000
@@ -385,7 +385,7 @@ object FoMain: TFoMain
         Size.Width = 110.000000000000000000
         Size.Height = 49.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 7
+        TabOrder = 6
         Text = 'Sqlite DB Test'
         OnClick = btnSqliteDBTestClick
       end
@@ -395,19 +395,16 @@ object FoMain: TFoMain
         Size.Width = 110.000000000000000000
         Size.Height = 22.000000000000000000
         Size.PlatformDefault = False
-        TabOrder = 19
+        TabOrder = 18
         Text = 'Sqlite Data Display'
         OnClick = btnSqliteDispClick
       end
-      object labCount: TLabel
-        Enabled = False
-        Position.X = 100.000000000000000000
-        Position.Y = 91.000000000000000000
-        Size.Width = 110.000000000000000000
-        Size.Height = 17.000000000000000000
-        Size.PlatformDefault = False
-        Text = 'labCount'
-        TabOrder = 5
+      object Button2: TButton
+        Position.X = 296.000000000000000000
+        Position.Y = 64.000000000000000000
+        TabOrder = 21
+        Text = 'Button2'
+        OnClick = Button2Click
       end
     end
     object layRectSel2: TLayout
@@ -570,6 +567,17 @@ object FoMain: TFoMain
         Justify = Left
         JustifyLastLine = Left
         FlowDirection = LeftToRight
+      end
+      object labCount: TLabel
+        AutoSize = True
+        Enabled = False
+        Position.X = 20.000000000000000000
+        Position.Y = 27.000000000000000000
+        Size.Width = 517.333312988281300000
+        Size.Height = 16.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'labCount'
+        TabOrder = 5
       end
     end
   end
