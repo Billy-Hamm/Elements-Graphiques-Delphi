@@ -3,7 +3,7 @@
 interface
 
 uses
-  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  System.SysUtils, System.Types, System.UITypes, System.IOUtils, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.StdCtrls,
   FMX.Controls.Presentation, FMX.Objects, FireDAC.Stan.Intf,
   FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf,
@@ -86,6 +86,7 @@ type
     Button1: TButton;
     FlowLayout1: TFlowLayout;
     Button2: TButton;
+    OpenDialog2: TOpenDialog;
 
     ////////////////////////////////////
 
@@ -221,14 +222,14 @@ begin
     end;
 end;
 
-function TFoMain.LabelCreate : ArrayOfLabel;
+function TFoMain.LabelCreate () : ArrayOfLabel;
 var
 ArrayOfLabels : ArrayOfLabel;
 ArrayOfResultLayouts : ArrayOfLayout;
 I, X, IntStart, IntFinal, IntLab : Integer;
 
 begin
-  ArrayOfResultLayouts := LayoutCreate;
+  ArrayOfResultLayouts := LayoutCreate ();
 
   SetLength(ArrayOfLabels, (databaseRecordAndFieldCount[0]*3) - 1);
   for I := 0 to Length(ArrayOfLabels) do
@@ -264,7 +265,6 @@ begin
 
       else
         break
-
   end;
 end;
 
@@ -275,19 +275,19 @@ ArrayOfLayouts : ArrayOfLayout;
 I : Integer;
 
 begin
-  SetLength(ArrayOfLayouts, (databaseRecordAndFieldCount [0] - 1) );
-  for I := 0 to databaseRecordAndFieldCount[0] - 1 do
-  begin
-    layoutDyn := Tlayout.Create(Frame);
-    with layoutDyn do
+    SetLength(ArrayOfLayouts, (databaseRecordAndFieldCount [0] - 1) );
+    for I := 0 to databaseRecordAndFieldCount[0] - 1 do
     begin
-      Parent := Frame;
-      Name := 'LayoutDyn' + IntToStr(I);
-      Align := TAlignLayout.Client;
-      Arrayoflayouts[I] := layoutdyn;
+      layoutDyn := Tlayout.Create(Frame);
+      with layoutDyn do
+      begin
+        Parent := Frame;
+        Name := 'LayoutDyn' + IntToStr(I);
+        Align := TAlignLayout.Client;
+        Arrayoflayouts[I] := layoutdyn;
+      end;
     end;
-  end;
-Result := ArrayOfLayouts;
+  Result := ArrayOfLayouts;
 end;
 
 
@@ -366,38 +366,61 @@ end;
 
 function TFoMain.DBConStatus(): Boolean;
 var
-  dbFileLoc : TFileName;
+  DbFileLoc, DbTrueFileLoc : TFileName;
 begin
   if AlreadyConn = False then
     try
-      AlreadyConn:= True;
       with DataModule4.FDConnection1 do
       begin
         labDbStatus.Text.Empty;
 
-        LoginPrompt := False;
-        dbInfo := dbInfo + 'Login prompt : ' + BoolToStr ( DataModule4.FDConnection1.LoginPrompt ) + sLineBreak;
-
         DriverName := 'SQLite';
         dbInfo := dbInfo + 'DriverName : ' + DataModule4.FDConnection1.DriverName + sLineBreak;
 
+        LoginPrompt := False;
+        dbInfo := dbInfo + 'Login prompt : ' + BoolToStr ( DataModule4.FDConnection1.LoginPrompt ) + sLineBreak;
+
+        DbTrueFileLoc := (GetCurrentDir + '\BdD\sqlitedb.db');
+
         //Verification for file existence :
-        if FileExists ('E:\Delphi Apps\BdD\sqlitedb.db') = True then
-          begin
-            Params.Database := ('E:\Delphi Apps\BdD\sqlitedb.db');
-            dbInfo := dbInfo + 'Database path : ' + DataModule4.FDConnection1.Params.Database + sLineBreak;
-          end
+        if FileExists (DbTrueFileLoc) = True then
+        begin
+          Params.Database := (DbTrueFileLoc);
+          dbInfo := dbInfo + 'Database path : ' + DataModule4.FDConnection1.Params.Database + sLineBreak;
+        end
+
         else
+
         begin
           TDialogService.ShowMessage('Database file requested not Found');
+
           with OpenDialog1 do
           begin
-            Title := 'Open SQLite (.db) file';
+            FileName := 'sqlitedb.db';
+            InitialDir := GetCurrentDir;
+            Title := 'Open SQLite (.db) database file';
             Filter := ('Sqlite Database|*.db|tous les fichiers|*.*');
             Execute;
           end;
-          dbFileLoc := OpenDialog1.FileName;
-          Params.Database := (dbFileLoc);
+
+          DbFileLoc := OpenDialog1.FileName;
+
+          while DbFileLoc <> DbTrueFileLoc do
+          begin
+            TDialogService.ShowMessage('Wrong DB file loaded');
+            with OpenDialog2 do
+            begin
+              InitialDir := GetCurrentDir;
+              Title := 'Open SQLite (.db) database file';
+              Filter := ('Sqlite Database|*.db|tous les fichiers|*.*');
+              Execute;
+
+              DbFileLoc := OpenDialog2.FileName;
+
+            end;
+          end;
+
+          Params.Database := (DbFileLoc);
           dbInfo := dbInfo + 'Database path : ' + DataModule4.FDConnection1.Params.Database + sLineBreak;
         end;
 
@@ -407,25 +430,29 @@ begin
 
         labDbStatus.Text := dbInfo;
 
-        Result := True;
       end;
+
+    AlreadyConn:= True;
+    Result := True;
+
     Except
       AlreadyConn := False;
       Result := False;
     end
 
   else
+// Database already connected
 
 end;
 
 procedure TFoMain.btnSqliteDBTestClick(Sender: TObject);
 begin
-  DBConStatus
+  DBConStatus ();
 end;
 
 procedure TFoMain.BtnFoShowClick(Sender: TObject);
 begin
-form3.show;
+  Form3.Show;
 end;
 
 procedure TFoMain.btnSqliteDispClick(Sender: TObject);
@@ -433,7 +460,7 @@ var
 I : integer;
 arrayOfField1, arrayOfField2, arrayOfField3 : array of string;
 begin
-    if DBConStatus = True then
+    if DBConStatus () = True then
       begin
         I := 1;
         with DataModule4.FDQuery1 do
@@ -469,7 +496,7 @@ end;
 
 procedure TFoMain.BtnDisplayDataClick(Sender: TObject);
 begin
-  DBConStatus;
+  DBConStatus ();
 
   databaseRecordAndFieldCount;
     FrameCreate();
@@ -484,25 +511,42 @@ I : integer;
 begin
 //  GetData(Datamodule4.FDConnection1, Datamodule4.FDQuery1, 'id_ets')
 //for I := 0 to ((databaseRecordAndFieldCount[0] * 3) - 1) do
-//  labCount.Text := labCount.Text + LayoutCreate[I].name + sLineBreak;
-LabelCreate;
+//  labCount.Text := labCount.Text + LayoutCreate () [I].name + sLineBreak;
+  LabelCreate ();
 
 end;
 
 procedure TFoMain.Button2Click(Sender: TObject);
 begin
-  labDbStatus.Text := GetCurrentDir;
+//
+//  with  OpenDialog1 do
+//  begin
+//    InitialDir := GetCurrentDir;
+//    FileName := 'sqlitedb.db';
+//    Title := 'Open SQLite (.db) database file';
+//    Filter := ('Sqlite Database|*.db|tous les fichiers|*.*');
+//    Execute;
+//  end;
+  try
+  if LayoutCreate ()  = nil then
+    begin
+      LayoutCreate ();
+      ShowMessage('Created')
+    end;
+  except
+    ShowMessage('Layout')
+  end;
 end;
 
 procedure TFoMain.Button3Click(Sender: TObject);
 begin
-restaurerBoutonConn(Sender);
+  RestaurerBoutonConn(Sender);
 end;
 
 procedure TFoMain.Button4Click(Sender: TObject);
 begin
-frMsgLicence1.animMsgLicence.StopValue := frMsgLicence1.rectMsgLicence.width;
-frMsgLicence1.animMsgLicence.start;
+  frMsgLicence1.animMsgLicence.StopValue := frMsgLicence1.rectMsgLicence.width;
+  frMsgLicence1.animMsgLicence.start;
 end;
 
 
@@ -511,7 +555,7 @@ var
 fieldCount, recordCount : integer;
 
 begin
-  DBConStatus;
+  DBConStatus ();
     with DataModule4.FDQuery1 do
       begin
         Connection := DataModule4.FDConnection1;
@@ -726,7 +770,7 @@ begin
   end
 end;
 
-procedure TFoMain.restaurerBoutonConn(Sender: TObject);
+procedure TFoMain.RestaurerBoutonConn(Sender: TObject);
 begin
   Label1.Visible := true;
   Rectangle1.Enabled := true;

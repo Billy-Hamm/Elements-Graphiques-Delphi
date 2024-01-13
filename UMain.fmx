@@ -326,9 +326,11 @@ object FoMain: TFoMain
       Size.PlatformDefault = False
       TabOrder = 6
       object labDbStatus: TLabel
-        Align = Fit
-        Size.Width = 109.399047851562500000
-        Size.Height = 122.000000000000000000
+        AutoSize = True
+        Position.X = 388.000000000000000000
+        Position.Y = 28.000000000000000000
+        Size.Width = 262.000000000000000000
+        Size.Height = 16.000000000000000000
         Size.PlatformDefault = False
         TextSettings.VertAlign = Leading
         Text = 'labDbStatus'
@@ -345,8 +347,6 @@ object FoMain: TFoMain
         OnClick = btnDBTestClick
       end
       object OpenDialog1: TOpenDialog
-        FileName = 'F:\Delphi Apps\BdD\mabase.db'
-        Title = 'Sqlite Database'
         Left = 296
         Top = 200
       end
@@ -400,11 +400,15 @@ object FoMain: TFoMain
         OnClick = btnSqliteDispClick
       end
       object Button2: TButton
-        Position.X = 296.000000000000000000
+        Position.X = 304.000000000000000000
         Position.Y = 64.000000000000000000
         TabOrder = 21
         Text = 'Button2'
         OnClick = Button2Click
+      end
+      object OpenDialog2: TOpenDialog
+        Left = 344
+        Top = 200
       end
     end
     object layRectSel2: TLayout
